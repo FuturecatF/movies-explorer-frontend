@@ -1,10 +1,17 @@
 import './NavTab.css';
+import { HashLink } from 'react-router-hash-link';
 function NavTab() {
   return (
     <ul className="navtab">
-      <li className="navtab__item">Ссылка 1</li>
-      <li className="navtab__item">Ссылка 2</li>
-      <li className="navtab__item">Ссылка 3</li>
+      <HashLink className="navtab__hashlink" smooth to='/#about'>
+        <li className="navtab__item">О проекте</li>
+      </HashLink>
+      <HashLink className="navtab__hashlink" smooth to='/#techs'>
+        <li className="navtab__item">Технологии</li>
+      </HashLink>
+      <HashLink className="navtab__hashlink" smooth to='/#about-me'>
+      <li className="navtab__item">Студент</li>
+      </HashLink>
     </ul>
   );
 }

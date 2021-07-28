@@ -7,6 +7,9 @@
   column-gap: 10px;
 }
 
+.navtab__hashlink {
+  text-decoration: none;
+}
 .navtab__item {
   padding: 10px 23px;
   color: #ffffff;
