@@ -1,0 +1,131 @@
+.search-form {
+  padding: 0 70px;
+  border-bottom: 1px solid #424242;
+  padding-bottom: 80px;
+}
+
+.search-form__container {
+  display: flex;
+  align-items: center;
+  max-width: 1140px;
+  background-color: #2f2f2f;
+  border-radius: 9px;
+  box-sizing: border-box;
+}
+
+.search-form__label-input {
+  display: flex;
+}
+
+.search-form__image-input {
+  padding: 19px;
+}
+
+.search-form__input {
+  outline: 0;
+  border: none;
+  padding: 0;
+  background-color: inherit;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 20px;
+  color: #8b8b8b;
+}
+
+.search-form__menu {
+  display: flex;
+   margin-left: auto;
+}
+
+.search-form__btn {
+  background-color: #4285f4;
+  border-radius: 20px;
+  width: 80px;
+  height: 34px;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.search-form__image {
+  padding: 6px 0;
+}
+
+.thumbler {
+  margin-left: auto;
+  border-left: 1px solid #424242;
+  padding-left: 30px;
+  display: flex;
+  align-self: center;
+}
+
+.thumbler__title {
+  margin: 0 30px 0 14px;
+  padding: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  color: #ffffff;
+  align-self: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #424242;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 8px;
+  width: 8px;
+  left: 5px;
+  bottom: 6px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #3ddc84;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
