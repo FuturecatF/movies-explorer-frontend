@@ -1,13 +1,9 @@
-import './Movies.css';
-
+import './SavedMovies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-
-// import { Route,/*  Link, */ Switch } from "react-router-dom";
-function Movies() {
+function SavedMovies() {
   return (
-    <div className="movies">
-
+    <div className="saved-movies">
       <SearchForm />
       <MoviesCardList />
 
@@ -15,4 +11,4 @@ function Movies() {
   );
 }
 
-export default Movies;
+export default SavedMovies;

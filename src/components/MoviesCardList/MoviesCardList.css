@@ -20,14 +20,6 @@
   margin: 0;
 }
 
-.movies-item__image {
-  display: block;
-  width: 100%;
-  object-fit: cover;
-  width: 270px;
-  height: 151px;
-}
-
 .movies-item__footer {
   display: flex;
   max-width: 270px;
@@ -56,11 +48,10 @@
   outline: 0;
   padding: 0;
   border: none;
-  /* align-self: center; */
   margin-left: auto;
 }
 
-.active {
+.movies-item__btn_active {
   background-image: url('../../images/like-active.svg');
 }
 

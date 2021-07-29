@@ -1,0 +1,21 @@
+.movies-item__image {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  width: 270px;
+  height: 151px;
+}
+
+.movies-item__btn-delete {
+  cursor: pointer;
+  background-image: url('../../images/btn-delete.svg');
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-position: 50%;
+  width: 24px;
+  height: 24px;
+  outline: 0;
+  padding: 0;
+  border: none;
+  margin-left: auto;
+}

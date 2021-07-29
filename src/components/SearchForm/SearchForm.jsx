@@ -23,9 +23,10 @@ function SearchForm() {
             <img className="search-form__image" src={searchIcon} alt="Найти" />
           </button>
           <div className="thumbler">
-            <label class="switch">
-              <input type="checkbox"></input>
-              <span class="slider round"></span>
+            <label className="switch">
+              <input type="checkbox" defaultChecked></input>
+
+              <span className="slider round"></span>
 
             </label>
             <p className="thumbler__title">Короткометражки</p>

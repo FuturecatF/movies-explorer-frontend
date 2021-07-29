@@ -1,18 +1,15 @@
 import './Main.css';
-import Header from '../Header/Header';
-
-
 import Promo from '../Promo/Promo'
 import AboutProject from '../AboutProject/AboutProject'
 import Techs from '../Techs/Techs'
 import AboutMe from '../AboutMe/AboutMe'
 import Portfolio from '../Portfolio/Portfolio'
-import Footer from '../Footer/Footer';
+
 // import React from "react";
 function Main() {
   return (
     <main className="content">
-      <Header />
+
 
 
 <Promo />
@@ -20,7 +17,7 @@ function Main() {
 <Techs />
 <AboutMe />
 <Portfolio />
-<Footer />
+
     </main>
   );
 }
