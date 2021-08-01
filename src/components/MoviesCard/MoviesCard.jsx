@@ -1,6 +1,7 @@
 import './MoviesCard.css';
 import React from 'react';
 import { useLocation } from 'react-router';
+import image1 from '../../images/image1.png';
 import image2 from '../../images/image2.png';
 
 // import { Route,/*  Link, */ Switch } from "react-router-dom";
@@ -21,7 +22,7 @@ function MoviesCard() {
   } else if (location.pathname === '/saved-movies') {
     return (
       <li className="movies-item">
-        <img className="movies-item__image" alt="Фото" src={image2}></img>
+        <img className="movies-item__image" alt="Фото" src={image1}></img>
         <div className="movies-item__footer">
           <p className="movies-item__title">
             Киноальманах «100 лет дизайна»

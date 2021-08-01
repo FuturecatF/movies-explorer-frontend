@@ -2,7 +2,7 @@ import './Profile.css';
 function Profile() {
   return (
     <div className="profile">
-      <form className="profile__form" noValidate>
+      <form className="profile__form">
         <fieldset className="profile__form-fieldset">
           <h2 className="profile__form-title">Привет, Олег!</h2>
           <div className="profile__form-input-container">

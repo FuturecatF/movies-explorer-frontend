@@ -3,18 +3,6 @@
   padding: 0 70px;
 }
 
-.section-title {
-  margin: 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 22px;
-  line-height: 27px;
-  letter-spacing: -0.04em;
-  padding-bottom: 23px;
-  color: #ffffff;
-  border-bottom: 1px solid #dadada;
-}
-
 .descriptions {
   display: grid;
   column-gap: 40px;

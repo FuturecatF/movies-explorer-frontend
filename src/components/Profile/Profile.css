@@ -1,13 +1,17 @@
 .profile {
-
+  margin-top: 74px;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile__form {
   color: #ffffff;
-  margin: 0 auto 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 410px;
+  min-width: 260px;
 }
 
 .profile__form-fieldset {
@@ -32,7 +36,6 @@
   font-weight: 500;
   font-size: 11px;
   line-height: 13px;
-  /* padding-bottom: 16px; */
   border-bottom: 1px solid #424242;
 }
 
@@ -74,36 +77,27 @@
 }
 
 .profile__form-button_red {
-  color: #EE3465;
+  color: #ee3465;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1279px) {
-  .Profile {
-    margin: 236px auto 269px;
-  }
-  .profile__form-title {
-    text-align: center;
-    margin: 0 auto 96px;
-  }
-  .profile__form-fieldset {
-    margin: 0 0 210px;
+@media screen and (max-width: 768px) {
+  .profile {
+    margin-top: 236px;
   }
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) {
-  .Profile {
-    margin: 70px auto 40px;
+@media screen and (max-width: 445px) {
+  .profile {
+    margin-top: 70px;
+    padding-bottom: 40px;
   }
   .profile__form {
-    margin: 0 auto 0;
     min-width: 260px;
-  }
-  .profile__form-fieldset {
-    margin: 0 0 379px;
+    width: 90%;
   }
   .profile__form-title {
     text-align: center;
-    margin: 0 auto 80px;
+    margin-bottom: 80px;
   }
   .profile__form-button {
     font-size: 12px;

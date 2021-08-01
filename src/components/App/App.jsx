@@ -56,7 +56,7 @@ function App() {
             <PageNotFound />
           </Route>
         </Switch>
-        {shouldShowFooter && <Footer />}
+         {shouldShowFooter && <Footer />}
 
         <MobileMenu
           isMobileMenuOpen={isMobileMenuOpen}

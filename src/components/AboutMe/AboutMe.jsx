@@ -5,13 +5,13 @@ function AboutMe() {
     <section className="about-me" id="about-me">
       <h2 className="about-me__title section-title">Студент</h2>
 
-      <div className="about-me-container">
-        <div className="about-me-container__content">
-        <h3 className="about-me-container__title">Олег</h3>
-        <p className="about-me-container__subtitle">
+      <div className="about-me__container">
+        <div className="about-me__content">
+        <h3 className="about-me__name">Олег</h3>
+        <p className="about-me__subtitle">
           Фронтенд-разработчик, 31 год
         </p>
-        <p className="about-me-container__about">
+        <p className="about-me__about">
           Я родился и живу в Саратове, закончил факультет экономики СГУ. У меня
           есть жена и дочь. Я люблю слушать музыку, а ещё увлекаюсь бегом.
           Недавно начал кодить. С 2015 года работал в компании «СКБ Контур».
@@ -19,14 +19,14 @@ function AboutMe() {
           фриланс-заказами и ушёл с постоянной работы.
         </p>
 
-        <nav className="about-me-navlinks">
-          <ul className="about-me-navlinks__items">
-            <li className="about-me-navlinks__item">VKontakte</li>
-            <li className="about-me-navlinks__item">Github</li>
+        <nav className="about-me__navlinks">
+          <ul className="about-me__nav-items">
+            <li className="about-me__nav-item">VKontakte</li>
+            <li className="about-me__nav-item">Github</li>
           </ul>
         </nav>
       </div>
-      <img className="about-me-container__image" src={authorPhoto} alt="author"></img>
+      <img className="about-me__image" src={authorPhoto} alt="author"></img>
       </div>
     </section>
   );

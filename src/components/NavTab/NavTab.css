@@ -12,7 +12,11 @@
 }
 .navtab__item {
   padding: 10px 23px;
-  color: #ffffff;
   background: #303030;
   border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
 }

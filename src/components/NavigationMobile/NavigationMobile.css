@@ -39,10 +39,10 @@
   padding-bottom: 4px;
 }
 
-.mobile-nav__btn-container {
- /*  margin-top: 200px; */
-  /* justify-self: flex-end; */
-}
+/* .mobile-nav__btn-container {
+  margin-top: 200px;
+  justify-self: flex-end;
+} */
 
 .mobile-nav__item_profile {
   background-image: url('../../images/icon-profile.svg');

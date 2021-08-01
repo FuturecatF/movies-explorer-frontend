@@ -6,13 +6,21 @@ function Login() {
   return (
     <div className="login">
       <div className="login__container">
-        <Link to="/">
+        <Link className="login__img-link" to="/">
           <img className="login__logo" alt="логотип" src={logo}></img>
         </Link>
         <h2 className="login__title">Рады видеть!</h2>
         <form className="login__form">
-          <input className="login__input" type="email" placeholder="Email" />
-          <input className="login__input" type="password" placeholder="Пароль" />
+          <label className="login__input-label" for="login-input-email">
+          Email
+          </label>
+          <input className="login__input" type="email" id="login-input"/>
+
+          <label className="login__input-label" for="login-input-password">
+          Пароль
+          </label>
+          <input className="login__input" type="password" />
+
           <button className="login__button">Войти</button>
           <p className="login__subtitle">
             Ещё не зарегистрированы?
