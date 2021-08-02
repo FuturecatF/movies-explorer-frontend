@@ -54,7 +54,7 @@ function App() {
           <Route path="/profile">
             <Profile />
           </Route>
-          <Route path="">
+          <Route path="*">
             <PageNotFound />
           </Route>
         </Switch>
