@@ -19,8 +19,8 @@ function Login() {
           <label className="login__input-label" for="login-input-password">
           Пароль
           </label>
-          <input className="login__input" type="password" />
-
+          <input className="login__input login__input_color-red" type="password" />
+          <p className="login__input-error">Что-то пошло не так...</p>
           <button className="login__button">Войти</button>
           <p className="login__subtitle">
             Ещё не зарегистрированы?

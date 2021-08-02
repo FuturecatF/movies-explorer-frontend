@@ -21,8 +21,8 @@ function AboutMe() {
 
         <nav className="about-me__navlinks">
           <ul className="about-me__nav-items">
-            <li className="about-me__nav-item">VKontakte</li>
-            <li className="about-me__nav-item">Github</li>
+            <li className="about-me__nav-item"><a className="link-decoration-none" rel="noreferrer" href="https://vk.com/starfen1x" target="_blank">VKontakte</a></li>
+            <li className="about-me__nav-item"><a className="link-decoration-none" rel="noreferrer" href="https://github.com/FuturecatF" target="_blank">Github</a></li>
           </ul>
         </nav>
       </div>

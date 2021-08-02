@@ -17,6 +17,29 @@
   row-gap: 38px;
 }
 
+.movie-cardlist__btn {
+  background-color: #2f2f2f;
+  color: #fff;
+  border-radius: 6px;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 0;
+  margin: 50px auto 80px;
+}
+
+.movie-cardlist__btn:hover {
+  opacity: .8;
+}
+
 @media screen and (max-width: 768px) {
   .movie-cardlist {
     padding: 0 30px;

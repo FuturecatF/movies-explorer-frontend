@@ -22,10 +22,11 @@ function Register() {
             Пароль
           </label>
           <input
-            className="register__input"
+            className="register__input register__input_color-red"
             type="password"
             id="register-input-password"
           />
+          <p className="register__input-error">Что-то пошло не так...</p>
           <button className="register__button">Зарегистрироваться</button>
           <p className="register__subtitle">
             Уже зарегистрированы?

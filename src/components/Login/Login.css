@@ -1,6 +1,5 @@
 .login {
   background-color: #202020;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding-bottom: 30px;
@@ -39,7 +38,7 @@
 }
 
 .login__input-label {
-  display:block;
+  display: block;
   color: #8b8b8b;
   font-style: normal;
   font-weight: normal;
@@ -60,6 +59,19 @@
   line-height: 17px;
   color: #ffffff;
   padding: 0 5px 10px 0;
+}
+
+.login__input_color-red {
+  color: #ee3465;
+}
+
+.login__input-error {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+  margin: 6px 0 0;
 }
 
 .login__input:last-of-type {
@@ -94,6 +106,10 @@
   padding: 0;
 }
 
+.login__button:hover {
+opacity: .8;
+}
+
 .login__link {
   text-decoration: none;
   font-style: normal;
@@ -104,20 +120,12 @@
   margin-left: 6px;
 }
 
-.login__button:focus {
-  opacity: 0.85;
-}
-
-@media (hover: hover) {
-  .login__button:hover {
-    opacity: 0.85;
+.login__link:hover {
+  opacity: .7;
   }
-}
 
-@media (hover: none) {
-  .login__button:active {
-    opacity: 0.85;
-  }
+.login__img-link:hover {
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 445px) {

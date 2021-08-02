@@ -13,7 +13,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  left: 50%;
+  left: 25%;
   bottom: 0;
   background-color: #202020;
   display: flex;
@@ -28,5 +28,11 @@
 
 .mobile-menu__container_active {
   transform: translateX(0%);
+}
+
+@media screen and (max-width: 445px) {
+  .mobile-menu__container {
+    left: 0;
+  }
 }
 

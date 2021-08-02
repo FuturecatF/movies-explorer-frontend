@@ -3,15 +3,23 @@ import { HashLink } from 'react-router-hash-link';
 function NavTab() {
   return (
     <ul className="navtab">
-      <HashLink className="navtab__hashlink" smooth to='/#about'>
-        <li className="navtab__item">О проекте</li>
-      </HashLink>
-      <HashLink className="navtab__hashlink" smooth to='/#techs'>
-        <li className="navtab__item">Технологии</li>
-      </HashLink>
-      <HashLink className="navtab__hashlink" smooth to='/#about-me'>
-      <li className="navtab__item">Студент</li>
-      </HashLink>
+      <li className="navtab__item">
+        <HashLink className="link-decoration-none" smooth to="#about">
+          О проекте
+        </HashLink>
+      </li>
+
+      <li className="navtab__item">
+        <HashLink className="link-decoration-none" smooth to="#techs">
+          Технологии
+        </HashLink>
+      </li>
+
+      <li className="navtab__item">
+        <HashLink className="link-decoration-none" smooth to="#about-me">
+          Студент
+        </HashLink>
+      </li>
     </ul>
   );
 }

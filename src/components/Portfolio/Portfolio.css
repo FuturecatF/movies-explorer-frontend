@@ -20,18 +20,63 @@
 .portfolio-navlinks__items {
   list-style-type: none;
   padding: 0;
+  margin: 0;
+}
+
+.portfolio-navlinks__item-link {
+  display: block;
 }
 
 .portfolio-navlinks__item {
+  position: relative;
   font-style: normal;
   font-weight: normal;
   font-size: 30px;
   line-height: 50px;
   letter-spacing: -0.04em;
   color: #ffffff;
-  border-bottom: 1px solid #424242;
-  padding-bottom: 20px;
   background-image: url('../../images/navlink-arrow.svg');
   background-repeat: no-repeat;
   background-position: right;
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 20px;
+  margin-top: 20px;
+}
+
+.portfolio-navlinks__item:hover {
+  opacity: .7;
+}
+
+.portfolio-navlinks__item:first-of-type {
+  margin-top: 0;
+}
+
+.portfolio-navlinks__item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio {
+    padding: 0 50px;
+    margin-top: 90px;
+  }
+  .portfolio-navlinks__item {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 445px) {
+  .portfolio {
+    padding: 0 14px 70px;
+    margin-top: 70px;
+  }
+  .portfolio__title {
+    font-size: 14px;
+    margin: 0 0 50px;
+  }
+  .portfolio-navlinks__item {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }

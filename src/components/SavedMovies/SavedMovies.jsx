@@ -6,7 +6,6 @@ function SavedMovies() {
     <div className="saved-movies">
       <SearchForm />
       <MoviesCardList />
-
     </div>
   );
 }

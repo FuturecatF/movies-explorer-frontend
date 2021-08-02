@@ -15,10 +15,12 @@ import { useLocation } from 'react-router';
 
 function App() {
   const location = useLocation();
-  const shouldShowHeader =
-    location.pathname !== '/signup' && location.pathname !== '/signin';
-    const shouldShowFooter =
-    location.pathname !== '/signup' && location.pathname !== '/signin' && location.pathname !== '/profile';
+
+  const headerLocation = ['/profile', '/', '/movies', '/saved-movies']
+  const footerLocation = ['/', '/movies', '/saved-movies']
+
+  const shouldShowHeader = headerLocation.some((item) => location.pathname === item);
+  const shouldShowFooter = footerLocation.some((item) => location.pathname === item);
 
   const [isMobileMenuOpen, SetIsMobileMenuOpen] = React.useState(false);
   function openMobileMenu() {
@@ -52,7 +54,7 @@ function App() {
           <Route path="/profile">
             <Profile />
           </Route>
-          <Route path="*">
+          <Route path="">
             <PageNotFound />
           </Route>
         </Switch>

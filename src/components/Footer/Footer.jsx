@@ -9,9 +9,9 @@ function Footer() {
         <p className="footer-content__date">&copy; {new Date().getFullYear()}</p>
         <nav className="footer-navlinks">
           <ul className="footer-navlinks__items">
-            <li className="footer-navlinks__item">Яндекс.Практикум</li>
-            <li className="footer-navlinks__item">Github</li>
-            <li className="footer-navlinks__item">Facebook</li>
+            <li className="footer-navlinks__item"><a className="link-decoration-none" rel="noreferrer" href="https://praktikum.yandex.ru/" target="_blank">Яндекс.Практикум</a></li>
+            <li className="footer-navlinks__item"><a className="link-decoration-none" rel="noreferrer" href="https://github.com/FuturecatF" target="_blank">Github</a></li>
+            <li className="footer-navlinks__item"><a className="link-decoration-none" rel="noreferrer" href="https://vk.com/starfen1x" target="_blank">VKontakte</a></li>
           </ul>
         </nav>
       </div>
