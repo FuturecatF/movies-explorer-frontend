@@ -12,7 +12,13 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import {
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+  Redirect,
+} from 'react-router-dom';
 import * as auth from '../../utils/auth';
 
 function App() {
@@ -109,20 +115,11 @@ function App() {
             <Route exact path="/">
               <Main />
             </Route>
-            <ProtectedRoute
-              exact path="/movies"
-              component={Movies}
-              isLoggedIn={isLoggedIn}
-            />
-            <ProtectedRoute
-              exact path="/saved-movies"
-              component={SavedMovies}
-              isLoggedIn={isLoggedIn}
-            />
+            <ProtectedRoute path="/movies" component={Movies} />
+            <ProtectedRoute path="/saved-movies" component={SavedMovies} />
             <ProtectedRoute
               path="/profile"
               component={Profile}
-              isLoggedIn={isLoggedIn}
               currentUser={currentUser}
             />
 
@@ -133,9 +130,11 @@ function App() {
               <Login onLogin={onLogin} />
             </Route>
 
-
             <Route path="*">
               <PageNotFound />
+            </Route>
+            <Route path="/">
+              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
             </Route>
           </Switch>
           {shouldShowFooter && <Footer />}

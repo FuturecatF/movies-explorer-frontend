@@ -4,14 +4,15 @@ import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 function Register({ onRegister }) {
+  const form = useForm({ mode: 'onChange' });
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ mode: 'onChange' });
-  const onSubmit = (data) => {
+  } = form;
+  const { isValid } = form.formState;
 
-    console.log(data);
+  const onSubmit = (data) => {
     onRegister(data);
   };
 
@@ -81,7 +82,7 @@ function Register({ onRegister }) {
             {...register('password', { required: true })}
           />
           <p className="register__input-error">Что-то пошло не так...</p>
-          <button className="register__button">Зарегистрироваться</button>
+          <button className={`register__button ${!isValid ? 'register__button_disabled' : ''}`} disabled={!isValid}>Зарегистрироваться</button>
           <p className="register__subtitle">
             Уже зарегистрированы?
             <Link className="register__link" to="/signin">

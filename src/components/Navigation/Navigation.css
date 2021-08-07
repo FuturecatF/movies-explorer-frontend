@@ -21,10 +21,12 @@
   text-decoration: none;
   color: #ffffff;
   display: none;
+  visibility: hidden;
 }
 
 .nav__item_visible {
   display: block;
+  visibility: visible;
 }
 
 .nav__item:hover {
