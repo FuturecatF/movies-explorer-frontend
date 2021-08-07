@@ -59,7 +59,8 @@
   position: relative;
   border: none;
   outline: none;
-  margin-bottom: 24px;
+  box-shadow: inset 0 0 0 50px #202020;
+  -webkit-text-fill-color: #fff;
   background-color: #202020;
   border-bottom: 1px solid #424242;
   font-style: normal;
@@ -67,16 +68,11 @@
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
-  padding: 0 5px 10px 0;
+  padding: 0 0 10px 0;
 }
 
 .register__input_color-red {
   color: #ee3465;
-}
-
-.register__input:last-of-type {
-  margin-bottom: 0;
-  margin-top: 0;
 }
 
 .register__input-error {
@@ -85,7 +81,14 @@
   font-size: 10px;
   line-height: 12px;
   color: #ee3465;
-  margin: 6px 0 0;
+  margin: 6px 0 24px;
+}
+
+.register__input:last-of-type {
+  margin-bottom: 0;
+  margin-top: 0;
+  box-shadow: inset 0 0 0 50px inherit;
+  -webkit-text-fill-color: inherit;
 }
 
 .register__button {

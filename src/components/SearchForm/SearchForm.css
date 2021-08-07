@@ -1,8 +1,9 @@
 .search-form {
   padding: 0 70px 80px;
-  border-bottom: 1px solid #424242;
   margin-top: 80px;
   display: flex;
+  box-sizing: border-box;
+  border-bottom: 1px solid #424242;
 }
 
 .search-form__container {
@@ -14,6 +15,8 @@
   width: 100%;
   max-width: 1140px;
   border-radius: 9px;
+
+
 }
 
 .search-form__container-input {

@@ -1,5 +1,6 @@
 import './Profile.css';
-function Profile() {
+function Profile({ currentUser }) {
+  const { name, email } = currentUser;
   return (
     <div className="profile">
       <form className="profile__form">
@@ -12,7 +13,8 @@ function Profile() {
               type="text"
               className="profile__form-input"
               placeholder="Имя"
-            ></input>
+              defaultValue={name}
+            />
           </div>
           <div className="profile__form-input-container">
             <label>E-mail</label>
@@ -21,7 +23,8 @@ function Profile() {
               type="email"
               className="profile__form-input"
               placeholder="Почта"
-            ></input>
+              defaultValue={email}
+            />
           </div>
         </fieldset>
         <button className="profile__form-button">Редактировать</button>

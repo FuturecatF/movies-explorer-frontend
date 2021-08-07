@@ -20,6 +20,11 @@
   line-height: 18px;
   text-decoration: none;
   color: #ffffff;
+  display: none;
+}
+
+.nav__item_visible {
+  display: block;
 }
 
 .nav__item:hover {
