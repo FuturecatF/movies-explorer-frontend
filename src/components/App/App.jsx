@@ -20,6 +20,8 @@ import {
   Redirect,
 } from 'react-router-dom';
 import * as auth from '../../utils/auth';
+import { api } from '../../utils/MainApi';
+import { getBeatMoviesFromApi } from '../../utils/MoviesApi';
 
 function App() {
   const location = useLocation();
@@ -35,10 +37,17 @@ function App() {
   );
 
   const [isMobileMenuOpen, SetIsMobileMenuOpen] = React.useState(false);
-
   const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
+  const [isAuthError, setIsAuthError] = React.useState(String);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [beatFilmsArray, setBeatFilmsArray] = React.useState([]);
+  const [searchResultArray, setSearchResultArray] = React.useState([]);
+  const [isSearching, setIsSearching] = React.useState(false);
+
+  const [savedMovies, setSavedMovies] = React.useState([]);
+  const [savedMoviesId, setSavedMoviesId] = React.useState([]);
 
   function openMobileMenu() {
     SetIsMobileMenuOpen(true);
@@ -59,6 +68,9 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        if (err === 'Error: 409') {
+          setIsAuthError('Пользователь с таким email уже существует');
+        }
       });
   }
 
@@ -104,6 +116,128 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  function getBeatMovies() {
+    setIsLoading(true);
+    getBeatMoviesFromApi()
+      .then((data) => {
+        console.log(data);
+        const moviesArray = data.map((item) => {
+          return {
+            ...item,
+            nameRU: item.nameRU,
+            nameEN: item.nameEN ? item.nameEN : item.nameRU,
+            image: `https://api.nomoreparties.co${item.image.url}`,
+            trailer: item.trailerLink,
+            thumbnail: `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
+            movieId: item.id,
+            like: false,
+          };
+        });
+        setBeatFilmsArray(moviesArray);
+        console.log(moviesArray);
+      })
+      .catch((err) => console.log(err))
+      .then(() => {
+        setIsLoading(false);
+      })
+      .finally(() => {
+        console.log('Ира любит тебя!');
+      });
+  }
+
+  React.useEffect(() => {
+    getBeatMovies();
+  }, []);
+
+  function getSearchMovies(keyword) {
+    setIsSearching(true);
+    const word = keyword.search.toLowerCase();
+
+    const res = beatFilmsArray.filter((el) => {
+      const nameRU = el.nameRU.toLowerCase();
+      const nameEN = el.nameEN.toLowerCase();
+      const description = el.description.toLowerCase();
+
+      return (
+        nameRU.includes(word) ||
+        nameEN.includes(word) ||
+        description.includes(word)
+      );
+    });
+
+    console.log(res);
+    setSearchResultArray(res);
+  }
+
+  /* function handleMovieLike(movie) {
+    api
+      .saveMovie(movie)
+      .then((movie) => {
+        const newMovie = {
+          ...movie,
+          like: true,
+        };
+        setSavedMovies([...savedMovies, newMovie])
+
+         if (savedMovies.length > 0) {
+          const res = savedMovies.filter((item)=> item.movieId !== item.id)
+          setSavedMovies(savedMovies.splice(res));
+        }
+
+        console.log(savedMovies);
+
+      })
+      .catch((err) => console.log(err));
+  } */
+
+  const handleMovieLike = (movie) => {
+    const like = savedMovies.some((i) =>
+      i.movieId === movie.id ? true : false
+    );
+    // if (like) {
+    if (!like) {
+      api
+        .saveMovie(movie)
+        .then(() => {
+          getMovies();
+        })
+
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      savedMovies.some((i) =>
+        i.movieId === movie.id
+          ? api
+              .deleteMovie(i._id)
+              .then(() => {
+                getMovies();
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+          : ''
+      );
+    }
+  };
+
+  // удаление фильма из избранного
+  function handleMovieDelete(movie) {
+    api
+      .deleteMovie(movie._id)
+      .then(() => {
+        const newSavedMovies = savedMovies.filter(
+          (savedMovie) => savedMovie._id !== movie._id
+        );
+        const newIdArray = newSavedMovies.map((movie) => movie.movieId);
+        setSavedMovies(newSavedMovies);
+        setSavedMoviesId(newIdArray);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <div className="page">
       <div className="page__container">
@@ -115,7 +249,16 @@ function App() {
             <Route exact path="/">
               <Main />
             </Route>
-            <ProtectedRoute path="/movies" component={Movies} />
+            <ProtectedRoute
+              path="/movies"
+              component={Movies}
+              isLoading={isLoading}
+              beatFilmsArray={beatFilmsArray}
+              getSearchMovies={getSearchMovies}
+              searchResultArray={searchResultArray}
+              isSearching={isSearching}
+              onCardClick={handleMovieLike}
+            />
             <ProtectedRoute path="/saved-movies" component={SavedMovies} />
             <ProtectedRoute
               path="/profile"
@@ -124,7 +267,7 @@ function App() {
             />
 
             <Route path="/signup">
-              <Register onRegister={onRegister} />
+              <Register onRegister={onRegister} isAuthError={isAuthError} />
             </Route>
             <Route path="/signin">
               <Login onLogin={onLogin} />

@@ -3,7 +3,7 @@ import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-function Register({ onRegister }) {
+function Register({ onRegister, isAuthError }) {
   const form = useForm({ mode: 'onChange' });
   const {
     register,
@@ -47,11 +47,11 @@ function Register({ onRegister }) {
             required
           />
           <p className="register__input-error">
-            {errors.name?.type === 'required' && '"Имя" обязательное поле'}
-            {errors.name?.type === 'minLength' && 'минимальная длина 2 символа'}
+            {errors.name?.type === 'required' && 'Это обязательное поле'}
+            {errors.name?.type === 'minLength' && 'Минимальная длина 2 символа'}
             {errors.name?.type === 'maxLength' &&
               'максимальная длина 12 символов'}
-            {errors.name?.type === 'pattern' && 'неподходящее имя'}
+            {errors.name?.type === 'pattern' && 'Неподходящее имя'}
           </p>
           <label
             className="register__input-label"
@@ -66,8 +66,9 @@ function Register({ onRegister }) {
             {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
           />
           <p className="register__input-error">
-            {errors.email?.type === 'required' && 'email is required'}
-            {errors.email?.type === 'pattern' && 'email must be email'}
+            {errors.email?.type === 'required' && 'Это обязательное поле'}
+            {errors.email?.type === 'pattern' &&
+              'Почта должна соответствовать почте'}
           </p>
           <label
             className="register__input-label"
@@ -81,8 +82,18 @@ function Register({ onRegister }) {
             id="register-input-password"
             {...register('password', { required: true })}
           />
-          <p className="register__input-error">Что-то пошло не так...</p>
-          <button className={`register__button ${!isValid ? 'register__button_disabled' : ''}`} disabled={!isValid}>Зарегистрироваться</button>
+          <p className="register__input-error">
+            {errors.password?.type === 'required' && 'Это обязательное поле'}
+          </p>
+          <p className="register__button-error">{isAuthError}</p>
+          <button
+            className={`register__button ${
+              !isValid ? 'register__button_disabled' : ''
+            }`}
+            disabled={!isValid}
+          >
+            Зарегистрироваться
+          </button>
           <p className="register__subtitle">
             Уже зарегистрированы?
             <Link className="register__link" to="/signin">

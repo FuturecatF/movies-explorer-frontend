@@ -1,12 +1,23 @@
 import './SearchForm.css';
 import searchIcon from '../../images/search.svg';
 import searchInputIcon from '../../images/search-input.svg';
+import { useForm } from 'react-hook-form';
+function SearchForm({ getSearchMovies }) {
 
-function SearchForm() {
+  const form = useForm();
+  const {
+    register,
+    handleSubmit,
+  } = form;
+
+  const onSubmit = (data) => {
+    getSearchMovies(data);
+  };
   return (
     <div className="search-form">
       <div className="search-form__container">
-        <div className="search-form__container-input">
+        <form className="search-form__container-input" onSubmit={handleSubmit(onSubmit)}
+          noValidate>
           <label className="search-form__label-input">
             <img
               className="search-form__image-input"
@@ -17,6 +28,7 @@ function SearchForm() {
               className="search-form__input"
               type="text"
               placeholder="Фильм"
+              {...register('search')}
             ></input>
           </label>
           <div className="search-form__btn-container">
@@ -28,7 +40,7 @@ function SearchForm() {
               />
             </button>
           </div>
-        </div>
+        </form>
         <div className="search-form__container-menu">
           <div className="search-form__menu">
             <div className="thumbler">
