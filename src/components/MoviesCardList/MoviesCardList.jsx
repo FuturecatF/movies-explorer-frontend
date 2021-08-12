@@ -1,23 +1,22 @@
 import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import Preloader from '../Preloader/Preloader';
 import { useLocation } from 'react-router-dom';
+
 function MoviesCardList(props) {
   const {
     isLoading,
-    beatFilmsArray,
-   // searchResultArray,
-   // isSearching,
+    // beatFilmsArray,
+    searchResultArray,
+    searchResultSavedArray,
+    isSearching,
     onCardClick,
     savedMovies,
     savedMovieIds,
-    onDeleteClick
+    onDeleteClick,
   } = props;
 
   const location = useLocation();
-
-
 
   const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
   const [countRenderedMovies, setCountRenderedMovies] = React.useState(0);
@@ -42,7 +41,7 @@ function MoviesCardList(props) {
     return () => window.removeEventListener('resize', resizedWindow);
   });
 
-  function handleAddButton() {
+  function handleAddMovies() {
     setCountRenderedMovies(countRenderedMovies + addRenderedMovies);
   }
 
@@ -63,39 +62,72 @@ function MoviesCardList(props) {
 
   return (
     <div className="movie-cardlist">
-      {isLoading ? (
-        <Preloader />
-      ) : (
-        <ul className="movies-items">
-          {location.pathname === '/saved-movies'
-            ? savedMovies.map((film) => (
-                <MoviesCard film={film} key={film._id} savedMovieIds={savedMovieIds} savedMovies={savedMovies} onDeleteClick={onDeleteClick} onCardClick={onCardClick}/>
-              ))
-            : /* searchResultArray.map((film) => (
-            <MoviesCard film={film} key={film.id} />
-          )) */
+      <ul className="movies-items">
+        {location.pathname === '/saved-movies' ?
+        !isSearching
+          ? savedMovies.reduce((moviesToRender, film) => {
+              if (moviesToRender.length < countRenderedMovies) {
+                moviesToRender.push(
+                  <MoviesCard
+                    film={film}
+                    key={film._id}
+                    savedMovieIds={savedMovieIds}
+                    savedMovies={savedMovies}
+                    onDeleteClick={onDeleteClick}
+                    onCardClick={onCardClick}
+                  />
+                );
+              }
+              return moviesToRender;
+            }, [])
+          : searchResultSavedArray.reduce((moviesToRender, film) => {
+              if (moviesToRender.length < countRenderedMovies) {
+                moviesToRender.push(
+                  <MoviesCard
+                    film={film}
+                    key={film._id}
+                    savedMovieIds={savedMovieIds}
+                    savedMovies={savedMovies}
+                    onDeleteClick={onDeleteClick}
+                    onCardClick={onCardClick}
+                  />
+                );
+              }
+              return moviesToRender;
+            }, [])
+:
+        location.pathname === '/movies' &&
+          isSearching &&
+          searchResultArray.reduce((moviesToRender, film) => {
+            if (moviesToRender.length < countRenderedMovies) {
+              moviesToRender.push(
+                <MoviesCard
+                  film={film}
+                  key={film.id}
+                  onCardClick={onCardClick}
+                  savedMovieIds={savedMovieIds}
+                  savedMovies={savedMovies}
+                />
+              );
+            }
+            return moviesToRender;
+          }, [])}
 
-          beatFilmsArray.reduce((moviesToRender, film) => {
-                if (moviesToRender.length < countRenderedMovies) {
-                  moviesToRender.push(
-                    <MoviesCard
-                      film={film}
-                      key={film.id}
-                      onCardClick={onCardClick}
-                      savedMovieIds={savedMovieIds}
-                      savedMovies={savedMovies}
-                    />
-                  );
-                }
-                return moviesToRender;
-              }, [])}
-        </ul>
-      )}
+      </ul>
+
       {!isLoading && (
         <button
-          className="movie-cardlist__btn"
+          className={`movie-cardlist__btn ${
+            location.pathname === '/saved-movies'
+              ? savedMovies.length <= countRenderedMovies
+                ? 'movie-cardlist__btn_hidden'
+                : ''
+              : searchResultArray.length <= countRenderedMovies
+              ? 'movie-cardlist__btn_hidden'
+              : ''
+          }`}
           type="button"
-          onClick={handleAddButton}
+          onClick={handleAddMovies}
         >
           Ещё
         </button>

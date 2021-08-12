@@ -2,16 +2,18 @@ import './SearchForm.css';
 import searchIcon from '../../images/search.svg';
 import searchInputIcon from '../../images/search-input.svg';
 import { useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 function SearchForm({ getSearchMovies }) {
-
+  const location = useLocation();
   const form = useForm();
   const {
     register,
     handleSubmit,
   } = form;
-
+const path = location.pathname;
   const onSubmit = (data) => {
-    getSearchMovies(data);
+    getSearchMovies(data, path);
+    console.log(path);
   };
   return (
     <div className="search-form">

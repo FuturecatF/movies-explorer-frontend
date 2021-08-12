@@ -43,6 +43,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [beatFilmsArray, setBeatFilmsArray] = React.useState([]);
   const [searchResultArray, setSearchResultArray] = React.useState([]);
+  const [searchResultSavedArray, setSearchResultSavedArray] = React.useState([]);
   const [isSearching, setIsSearching] = React.useState(false);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedMovieIds, setSavedMovieIds] = React.useState([]);
@@ -52,8 +53,7 @@ function App() {
       api
         .getSavedMovies()
         .then((data) => {
-          setSavedMovies(data);
-          //   setSavedMovieIds((state) => state.map((movie) => movie.movieId));
+          setSavedMovies(data.reverse());
         })
         .catch((err) => console.log(err));
     }
@@ -127,7 +127,6 @@ function App() {
   }, [isLoggedIn]);
 
   function getBeatMovies() {
-    setIsLoading(true);
     getBeatMoviesFromApi()
       .then((data) => {
         console.log(data);
@@ -144,12 +143,8 @@ function App() {
           };
         });
         setBeatFilmsArray(moviesArray);
-        // setSavedMovieIds((state) => state.map((movie) => movie.movieId));
       })
       .catch((err) => console.log(err))
-      .then(() => {
-        setIsLoading(false);
-      })
       .finally(() => {
         console.log('Ира любит тебя!');
       });
@@ -159,11 +154,12 @@ function App() {
     getBeatMovies();
   }, []);
 
-  function getSearchMovies(keyword) {
+  function getSearchResult(keyword, array, setArray) {
+    setIsLoading(true);
     setIsSearching(true);
     const word = keyword.search.toLowerCase();
 
-    const res = beatFilmsArray.filter((el) => {
+    const res = array.filter((el) => {
       const nameRU = el.nameRU.toLowerCase();
       const nameEN = el.nameEN.toLowerCase();
       const description = el.description.toLowerCase();
@@ -174,9 +170,19 @@ function App() {
         description.includes(word)
       );
     });
+    setArray(res);
+    setTimeout(function doSomething() {
+      setIsLoading(false);
+    }, 2000);
+  }
 
-    console.log(res);
-    setSearchResultArray(res);
+  function handleSearch(keyword, path) {
+    if (path === '/movies') {
+      getSearchResult(keyword, beatFilmsArray, setSearchResultArray);
+    }
+    if (path === '/saved-movies') {
+      getSearchResult(keyword, savedMovies, setSearchResultSavedArray);
+    }
   }
 
   const handleMovieLike = (movie) => {
@@ -186,7 +192,7 @@ function App() {
       api
         .saveMovie(movie)
         .then((newMovie) => {
-          setSavedMovies([...savedMovies, newMovie]);
+          setSavedMovies([newMovie, ...savedMovies]);
           setSavedMovieIds([...savedMovieIds, newMovie.movieId]);
         })
 
@@ -217,16 +223,15 @@ function App() {
     }
   };
   function handleMovieLikeDelete(movie) {
-    console.log(movie._id);
     api
       .deleteMovie(movie._id)
       .then((newMovie) => {
-        if (movie.message === 'Карточка удалена') {
+        if (newMovie.message === 'Карточка удалена') {
           setSavedMovies((state) =>
-            state.filter((item) => item.movieId !== newMovie.movieId)
+            state.filter((item) => item.movieId !== movie.movieId)
           );
           setSavedMovieIds((state) =>
-            state.filter((id) => id !== newMovie.movieId)
+            state.filter((id) => id !== movie.movieId)
           );
         }
       })
@@ -234,25 +239,6 @@ function App() {
         console.log(err);
       });
   }
-
-  console.log(savedMovies);
-  console.log(savedMovieIds);
-  // удаление фильма из избранного
-  /* function handleMovieDelete(movie) {
-    api
-      .deleteMovie(movie._id)
-      .then(() => {
-        const newSavedMovies = savedMovies.filter(
-          (savedMovie) => savedMovie._id !== movie._id
-        );
-        const newIdArray = newSavedMovies.map((movie) => movie.movieId);
-        setSavedMovies(newSavedMovies);
-        setSavedMoviesId(newIdArray);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } */
 
   return (
     <div className="page">
@@ -270,7 +256,7 @@ function App() {
               component={Movies}
               isLoading={isLoading}
               beatFilmsArray={beatFilmsArray}
-              getSearchMovies={getSearchMovies}
+              getSearchMovies={handleSearch}
               searchResultArray={searchResultArray}
               isSearching={isSearching}
               onCardClick={handleMovieLike}
@@ -284,6 +270,10 @@ function App() {
               savedMovieIds={savedMovieIds}
               onDeleteClick={handleMovieLikeDelete}
               onCardClick={handleMovieLike}
+              isLoading={isLoading}
+              getSearchMovies={handleSearch}
+              searchResultSavedArray={searchResultSavedArray}
+              isSearching={isSearching}
             />
             <ProtectedRoute
               path="/profile"

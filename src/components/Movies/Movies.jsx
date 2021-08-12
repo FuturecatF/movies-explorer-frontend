@@ -1,7 +1,7 @@
 import './Movies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-// import Preloader from '../Preloader/Preloader'
+import Preloader from '../Preloader/Preloader';
 
 function Movies({
   isLoading,
@@ -12,22 +12,25 @@ function Movies({
   onCardClick,
   savedMovieIds,
   savedMovies,
-  onDeleteClick
+  onDeleteClick,
 }) {
   return (
     <div className="movies">
       <SearchForm getSearchMovies={getSearchMovies} />
-
-      <MoviesCardList
-        isLoading={isLoading}
-        beatFilmsArray={beatFilmsArray}
-        searchResultArray={searchResultArray}
-        isSearching={isSearching}
-        onCardClick={onCardClick}
-        savedMovieIds={savedMovieIds}
-        savedMovies={savedMovies}
-        onDeleteClick={onDeleteClick}
-      />
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <MoviesCardList
+          isLoading={isLoading}
+          beatFilmsArray={beatFilmsArray}
+          searchResultArray={searchResultArray}
+          isSearching={isSearching}
+          onCardClick={onCardClick}
+          savedMovieIds={savedMovieIds}
+          savedMovies={savedMovies}
+          onDeleteClick={onDeleteClick}
+        />
+      )}
     </div>
   );
 }
