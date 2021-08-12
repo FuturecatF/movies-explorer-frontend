@@ -2,9 +2,23 @@ import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
-
+import { useLocation } from 'react-router-dom';
 function MoviesCardList(props) {
-  const { isLoading, beatFilmsArray, searchResultArray, isSearching, onCardClick } = props;
+  const {
+    isLoading,
+    beatFilmsArray,
+   // searchResultArray,
+   // isSearching,
+    onCardClick,
+    savedMovies,
+    savedMovieIds,
+    onDeleteClick
+  } = props;
+
+  const location = useLocation();
+
+
+
   const [windowWidth, setWindowWidth] = React.useState(window.screen.width);
   const [countRenderedMovies, setCountRenderedMovies] = React.useState(0);
   const [addRenderedMovies, setAddRenderedMovies] = React.useState(0);
@@ -16,7 +30,6 @@ function MoviesCardList(props) {
   }, [windowWidth]);
   let timer;
   function resizedWindow() {
-
     if (timer) {
       clearTimeout(timer);
     }
@@ -50,20 +63,34 @@ function MoviesCardList(props) {
 
   return (
     <div className="movie-cardlist">
-      {isLoading && <Preloader />}
-      <ul className="movies-items">
-        {isSearching &&
-          searchResultArray.map((film) => (
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <ul className="movies-items">
+          {location.pathname === '/saved-movies'
+            ? savedMovies.map((film) => (
+                <MoviesCard film={film} key={film._id} savedMovieIds={savedMovieIds} savedMovies={savedMovies} onDeleteClick={onDeleteClick} onCardClick={onCardClick}/>
+              ))
+            : /* searchResultArray.map((film) => (
             <MoviesCard film={film} key={film.id} />
-          ))}
-        {!isSearching &&
+          )) */
+
           beatFilmsArray.reduce((moviesToRender, film) => {
-            if (moviesToRender.length < countRenderedMovies) {
-              moviesToRender.push(<MoviesCard film={film} key={film.id} onCardClick={onCardClick}/>);
-            }
-            return moviesToRender;
-          }, [])}
-      </ul>
+                if (moviesToRender.length < countRenderedMovies) {
+                  moviesToRender.push(
+                    <MoviesCard
+                      film={film}
+                      key={film.id}
+                      onCardClick={onCardClick}
+                      savedMovieIds={savedMovieIds}
+                      savedMovies={savedMovies}
+                    />
+                  );
+                }
+                return moviesToRender;
+              }, [])}
+        </ul>
+      )}
       {!isLoading && (
         <button
           className="movie-cardlist__btn"

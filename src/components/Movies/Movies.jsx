@@ -9,7 +9,10 @@ function Movies({
   getSearchMovies,
   searchResultArray,
   isSearching,
-  onCardClick
+  onCardClick,
+  savedMovieIds,
+  savedMovies,
+  onDeleteClick
 }) {
   return (
     <div className="movies">
@@ -21,6 +24,9 @@ function Movies({
         searchResultArray={searchResultArray}
         isSearching={isSearching}
         onCardClick={onCardClick}
+        savedMovieIds={savedMovieIds}
+        savedMovies={savedMovies}
+        onDeleteClick={onDeleteClick}
       />
     </div>
   );

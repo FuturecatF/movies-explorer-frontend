@@ -10,8 +10,8 @@ class Api {
     return res.json();
   }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
+  getSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -109,7 +109,7 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://api.futurecat-diploma.nomoredomains.club',
+  baseUrl: 'http://localhost:3001', // https://api.futurecat-diploma.nomoredomains.club
   /* headers: {
     "Content-type": "application/json",
   }, */

@@ -25,7 +25,7 @@ import { getBeatMoviesFromApi } from '../../utils/MoviesApi';
 
 function App() {
   const location = useLocation();
-
+  const history = useHistory();
   const headerLocation = ['/', '/movies', '/saved-movies', '/profile'];
   const footerLocation = ['/', '/movies', '/saved-movies'];
 
@@ -37,7 +37,6 @@ function App() {
   );
 
   const [isMobileMenuOpen, SetIsMobileMenuOpen] = React.useState(false);
-  const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isAuthError, setIsAuthError] = React.useState(String);
@@ -45,9 +44,20 @@ function App() {
   const [beatFilmsArray, setBeatFilmsArray] = React.useState([]);
   const [searchResultArray, setSearchResultArray] = React.useState([]);
   const [isSearching, setIsSearching] = React.useState(false);
-
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [savedMoviesId, setSavedMoviesId] = React.useState([]);
+  const [savedMovieIds, setSavedMovieIds] = React.useState([]);
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      api
+        .getSavedMovies()
+        .then((data) => {
+          setSavedMovies(data);
+          //   setSavedMovieIds((state) => state.map((movie) => movie.movieId));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   function openMobileMenu() {
     SetIsMobileMenuOpen(true);
@@ -134,7 +144,7 @@ function App() {
           };
         });
         setBeatFilmsArray(moviesArray);
-        console.log(moviesArray);
+        // setSavedMovieIds((state) => state.map((movie) => movie.movieId));
       })
       .catch((err) => console.log(err))
       .then(() => {
@@ -169,37 +179,15 @@ function App() {
     setSearchResultArray(res);
   }
 
-  /* function handleMovieLike(movie) {
-    api
-      .saveMovie(movie)
-      .then((movie) => {
-        const newMovie = {
-          ...movie,
-          like: true,
-        };
-        setSavedMovies([...savedMovies, newMovie])
-
-         if (savedMovies.length > 0) {
-          const res = savedMovies.filter((item)=> item.movieId !== item.id)
-          setSavedMovies(savedMovies.splice(res));
-        }
-
-        console.log(savedMovies);
-
-      })
-      .catch((err) => console.log(err));
-  } */
-
   const handleMovieLike = (movie) => {
-    const like = savedMovies.some((i) =>
-      i.movieId === movie.id ? true : false
-    );
-    // if (like) {
+    const like = savedMovies.some((i) => i.movieId === movie.id);
+
     if (!like) {
       api
         .saveMovie(movie)
-        .then(() => {
-          getMovies();
+        .then((newMovie) => {
+          setSavedMovies([...savedMovies, newMovie]);
+          setSavedMovieIds([...savedMovieIds, newMovie.movieId]);
         })
 
         .catch((err) => {
@@ -210,8 +198,16 @@ function App() {
         i.movieId === movie.id
           ? api
               .deleteMovie(i._id)
-              .then(() => {
-                getMovies();
+
+              .then((movie) => {
+                if (movie.message === 'Карточка удалена') {
+                  setSavedMovies((state) =>
+                    state.filter((item) => item.movieId !== i.movieId)
+                  );
+                  setSavedMovieIds((state) =>
+                    state.filter((id) => id !== i.movieId)
+                  );
+                }
               })
               .catch((err) => {
                 console.log(err);
@@ -220,9 +216,29 @@ function App() {
       );
     }
   };
+  function handleMovieLikeDelete(movie) {
+    console.log(movie._id);
+    api
+      .deleteMovie(movie._id)
+      .then((newMovie) => {
+        if (movie.message === 'Карточка удалена') {
+          setSavedMovies((state) =>
+            state.filter((item) => item.movieId !== newMovie.movieId)
+          );
+          setSavedMovieIds((state) =>
+            state.filter((id) => id !== newMovie.movieId)
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
+  console.log(savedMovies);
+  console.log(savedMovieIds);
   // удаление фильма из избранного
-  function handleMovieDelete(movie) {
+  /* function handleMovieDelete(movie) {
     api
       .deleteMovie(movie._id)
       .then(() => {
@@ -236,7 +252,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  } */
 
   return (
     <div className="page">
@@ -258,8 +274,17 @@ function App() {
               searchResultArray={searchResultArray}
               isSearching={isSearching}
               onCardClick={handleMovieLike}
+              savedMovieIds={savedMovieIds}
+              savedMovies={savedMovies}
             />
-            <ProtectedRoute path="/saved-movies" component={SavedMovies} />
+            <ProtectedRoute
+              path="/saved-movies"
+              component={SavedMovies}
+              savedMovies={savedMovies}
+              savedMovieIds={savedMovieIds}
+              onDeleteClick={handleMovieLikeDelete}
+              onCardClick={handleMovieLike}
+            />
             <ProtectedRoute
               path="/profile"
               component={Profile}
