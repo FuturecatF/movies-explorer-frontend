@@ -13,8 +13,9 @@ function SearchForm({ getSearchMovies }) {
 const path = location.pathname;
   const onSubmit = (data) => {
     getSearchMovies(data, path);
-    console.log(path);
+    console.log(data);
   };
+
   return (
     <div className="search-form">
       <div className="search-form__container">
@@ -30,7 +31,7 @@ const path = location.pathname;
               className="search-form__input"
               type="text"
               placeholder="Фильм"
-              {...register('search')}
+              {...register('search', { required: true })}
             ></input>
           </label>
           <div className="search-form__btn-container">
@@ -47,7 +48,7 @@ const path = location.pathname;
           <div className="search-form__menu">
             <div className="thumbler">
               <label className="switch">
-                <input type="checkbox" defaultChecked></input>
+                <input type="checkbox" {...register('checkbox')}></input>
 
                 <span className="slider round"></span>
               </label>

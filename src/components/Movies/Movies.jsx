@@ -3,23 +3,29 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 
-function Movies({
-  isLoading,
-  beatFilmsArray,
-  getSearchMovies,
-  searchResultArray,
-  isSearching,
-  onCardClick,
-  savedMovieIds,
-  savedMovies,
-  onDeleteClick,
-}) {
+function Movies(props) {
+  const {
+    isLoading,
+    beatFilmsArray,
+    getSearchMovies,
+    searchResultArray,
+    isSearching,
+    onCardClick,
+    savedMovieIds,
+    savedMovies,
+    onDeleteClick,
+  } = props;
+
+  /* if (searchResultArray.length === 0 && isSearching) {
+    return <div className="movies__not-found">Ничего не найдено</div>;
+  } */
+
   return (
-    <div className="movies">
+    <section className="movies">
       <SearchForm getSearchMovies={getSearchMovies} />
       {isLoading ? (
         <Preloader />
-      ) : (
+      ) :  (
         <MoviesCardList
           isLoading={isLoading}
           beatFilmsArray={beatFilmsArray}
@@ -30,8 +36,11 @@ function Movies({
           savedMovies={savedMovies}
           onDeleteClick={onDeleteClick}
         />
+
       )}
-    </div>
+
+{!searchResultArray.length && isSearching ? <p>Ничего не найдено</p> : '' }
+    </section >
   );
 }
 

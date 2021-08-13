@@ -20,28 +20,7 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  postNewCard(data, jwt) {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-      body: JSON.stringify(data),
-    }).then(this._getResponseData);
-  }
-
-  getUserProfile() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-    }).then(this._getResponseData);
-  }
-
-  setUserProfile(data, jwt) {
+  updateProfile(data) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -86,6 +65,7 @@ class Api {
       },
     }).then(this._getResponseData);
   }
+
   deleteMovie(movieId) {
     return fetch(`${this._baseUrl}/movies/${movieId}`, {
       method: 'DELETE',
@@ -96,21 +76,9 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  setUserAvatar(avatar, jwt) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-      body: JSON.stringify(avatar),
-    }).then(this._getResponseData);
-  }
+
 }
 
 export const api = new Api({
   baseUrl: 'http://localhost:3001', // https://api.futurecat-diploma.nomoredomains.club
-  /* headers: {
-    "Content-type": "application/json",
-  }, */
 });

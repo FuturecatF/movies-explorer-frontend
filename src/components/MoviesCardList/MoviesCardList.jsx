@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 function MoviesCardList(props) {
   const {
     isLoading,
-    // beatFilmsArray,
     searchResultArray,
     searchResultSavedArray,
     isSearching,
@@ -14,6 +13,7 @@ function MoviesCardList(props) {
     savedMovies,
     savedMovieIds,
     onDeleteClick,
+    isSearchingSaved,
   } = props;
 
   const location = useLocation();
@@ -63,68 +63,55 @@ function MoviesCardList(props) {
   return (
     <div className="movie-cardlist">
       <ul className="movies-items">
-        {location.pathname === '/saved-movies' ?
-        !isSearching
-          ? savedMovies.reduce((moviesToRender, film) => {
-              if (moviesToRender.length < countRenderedMovies) {
-                moviesToRender.push(
-                  <MoviesCard
-                    film={film}
-                    key={film._id}
-                    savedMovieIds={savedMovieIds}
-                    savedMovies={savedMovies}
-                    onDeleteClick={onDeleteClick}
-                    onCardClick={onCardClick}
-                  />
-                );
-              }
-              return moviesToRender;
-            }, [])
-          : searchResultSavedArray.reduce((moviesToRender, film) => {
-              if (moviesToRender.length < countRenderedMovies) {
-                moviesToRender.push(
-                  <MoviesCard
-                    film={film}
-                    key={film._id}
-                    savedMovieIds={savedMovieIds}
-                    savedMovies={savedMovies}
-                    onDeleteClick={onDeleteClick}
-                    onCardClick={onCardClick}
-                  />
-                );
-              }
-              return moviesToRender;
-            }, [])
-:
-        location.pathname === '/movies' &&
-          isSearching &&
-          searchResultArray.reduce((moviesToRender, film) => {
-            if (moviesToRender.length < countRenderedMovies) {
-              moviesToRender.push(
+        {location.pathname === '/saved-movies'
+          ? !isSearchingSaved
+            ? savedMovies.map((film) => (
                 <MoviesCard
                   film={film}
-                  key={film.id}
-                  onCardClick={onCardClick}
+                  key={film._id}
                   savedMovieIds={savedMovieIds}
                   savedMovies={savedMovies}
+                  onDeleteClick={onDeleteClick}
+                  onCardClick={onCardClick}
                 />
-              );
-            }
-            return moviesToRender;
-          }, [])}
+              ))
+            : searchResultSavedArray.map((film) => (
+                <MoviesCard
+                  film={film}
+                  key={film._id}
+                  savedMovieIds={savedMovieIds}
+                  savedMovies={savedMovies}
+                  onDeleteClick={onDeleteClick}
+                  onCardClick={onCardClick}
+                />
+              ))
+          : isSearching &&
+            searchResultArray.reduce((moviesToRender, film) => {
+              if (moviesToRender.length < countRenderedMovies) {
+                moviesToRender.push(
+                  <MoviesCard
+                    film={film}
+                    key={film.id}
+                    onCardClick={onCardClick}
+                    savedMovieIds={savedMovieIds}
+                    savedMovies={savedMovies}
 
+                  />
+                );
+              }
+              return moviesToRender;
+            }, [])}
       </ul>
 
       {!isLoading && (
         <button
           className={`movie-cardlist__btn ${
             location.pathname === '/saved-movies'
-              ? savedMovies.length <= countRenderedMovies
-                ? 'movie-cardlist__btn_hidden'
-                : ''
-              : searchResultArray.length <= countRenderedMovies
+              && 'movie-cardlist__btn_hidden'}
+              ${location.pathname === '/movies'
+              ? searchResultArray.length <= countRenderedMovies
               ? 'movie-cardlist__btn_hidden'
-              : ''
+              : '' : ''
           }`}
           type="button"
           onClick={handleAddMovies}

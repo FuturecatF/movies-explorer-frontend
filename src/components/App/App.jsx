@@ -43,8 +43,11 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [beatFilmsArray, setBeatFilmsArray] = React.useState([]);
   const [searchResultArray, setSearchResultArray] = React.useState([]);
-  const [searchResultSavedArray, setSearchResultSavedArray] = React.useState([]);
+  const [searchResultSavedArray, setSearchResultSavedArray] = React.useState(
+    []
+  );
   const [isSearching, setIsSearching] = React.useState(false);
+  const [isSearchingSaved, setIsSearchingSaved] = React.useState(false);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedMovieIds, setSavedMovieIds] = React.useState([]);
 
@@ -130,34 +133,42 @@ function App() {
     getBeatMoviesFromApi()
       .then((data) => {
         console.log(data);
+        const pattern = /^http[s]?:\/\/\w+/;
+
         const moviesArray = data.map((item) => {
           return {
             ...item,
             nameRU: item.nameRU,
             nameEN: item.nameEN ? item.nameEN : item.nameRU,
             image: `https://api.nomoreparties.co${item.image.url}`,
-            trailer: item.trailerLink,
+            trailer:
+              item.trailerLink === null || !pattern.test(item.trailerLink)
+                ? 'https://images.unsplash.com/photo-1493599588594-dc6ae2c099bf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80'
+                : item.trailerLink,
             thumbnail: `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
             movieId: item.id,
-            like: false,
           };
         });
         setBeatFilmsArray(moviesArray);
       })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        console.log('Ира любит тебя!');
-      });
+      .catch((err) => console.log(err));
   }
 
   React.useEffect(() => {
     getBeatMovies();
   }, []);
 
-  function getSearchResult(keyword, array, setArray) {
+  function getSearchResult(data, array, setArray) {
     setIsLoading(true);
-    setIsSearching(true);
-    const word = keyword.search.toLowerCase();
+
+    if (array === beatFilmsArray) {
+      setIsSearching(true);
+    } else if (array === savedMovies) {
+      setIsSearchingSaved(true);
+    }
+
+    const checkbox = data.checkbox;
+    const keyword = data.search.toLowerCase();
 
     const res = array.filter((el) => {
       const nameRU = el.nameRU.toLowerCase();
@@ -165,25 +176,53 @@ function App() {
       const description = el.description.toLowerCase();
 
       return (
-        nameRU.includes(word) ||
-        nameEN.includes(word) ||
-        description.includes(word)
+        nameRU.includes(keyword) ||
+        nameEN.includes(keyword) ||
+        description.includes(keyword)
       );
     });
-    setArray(res);
+
+    if (checkbox) {
+      const shortMoviesResult = res.filter((item) => item.duration <= 40);
+      setResult(setArray, shortMoviesResult);
+    } else {
+      setResult(setArray, res);
+    }
+
     setTimeout(function doSomething() {
       setIsLoading(false);
     }, 2000);
   }
 
-  function handleSearch(keyword, path) {
-    if (path === '/movies') {
-      getSearchResult(keyword, beatFilmsArray, setSearchResultArray);
-    }
-    if (path === '/saved-movies') {
-      getSearchResult(keyword, savedMovies, setSearchResultSavedArray);
+  function setResult(setState, array) {
+    if (setState === setSearchResultArray) {
+      setState(array);
+      localStorage.setItem('searchResultArray', JSON.stringify(array));
+    } else if (setState === setSearchResultSavedArray) {
+      setState(array);
     }
   }
+
+  function handleSearch(data, path) {
+    if (path === '/movies') {
+      getSearchResult(data, beatFilmsArray, setSearchResultArray);
+    }
+    if (path === '/saved-movies') {
+      getSearchResult(data, savedMovies, setSearchResultSavedArray);
+    }
+  }
+
+  // PERSIST ++++++++++++++++++++++++++++++++++++
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      const resultArray = JSON.parse(localStorage.getItem('searchResultArray'));
+      if (resultArray) {
+        setSearchResultArray(resultArray);
+        setIsSearching(true);
+      }
+    }
+  }, [isLoggedIn]);
+  // PERSIST ++++++++++++++++++++++++++++++++++++
 
   const handleMovieLike = (movie) => {
     const like = savedMovies.some((i) => i.movieId === movie.id);
@@ -240,6 +279,19 @@ function App() {
       });
   }
 
+  function handleChangeProfile(data) {
+    api
+      .updateProfile(data)
+      .then((res) => {
+        if (res) {
+          setCurrentUser({ name: res.name, email: res.email });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <div className="page">
       <div className="page__container">
@@ -273,12 +325,13 @@ function App() {
               isLoading={isLoading}
               getSearchMovies={handleSearch}
               searchResultSavedArray={searchResultSavedArray}
-              isSearching={isSearching}
+              isSearchingSaved={isSearchingSaved}
             />
             <ProtectedRoute
               path="/profile"
               component={Profile}
               currentUser={currentUser}
+              onChangeProfile={handleChangeProfile}
             />
 
             <Route path="/signup">
