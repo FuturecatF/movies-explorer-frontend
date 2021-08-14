@@ -75,10 +75,8 @@ class Api {
       },
     }).then(this._getResponseData);
   }
-
-
 }
 
 export const api = new Api({
-  baseUrl: 'http://localhost:3001', // https://api.futurecat-diploma.nomoredomains.club
+  baseUrl: 'https://api.futurecat-diploma.nomoredomains.club',
 });

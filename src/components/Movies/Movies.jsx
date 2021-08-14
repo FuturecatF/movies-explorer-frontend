@@ -6,7 +6,6 @@ import Preloader from '../Preloader/Preloader';
 function Movies(props) {
   const {
     isLoading,
-    beatFilmsArray,
     getSearchMovies,
     searchResultArray,
     isSearching,
@@ -14,21 +13,24 @@ function Movies(props) {
     savedMovieIds,
     savedMovies,
     onDeleteClick,
+    isSearchError,
   } = props;
-
-  /* if (searchResultArray.length === 0 && isSearching) {
-    return <div className="movies__not-found">Ничего не найдено</div>;
-  } */
 
   return (
     <section className="movies">
       <SearchForm getSearchMovies={getSearchMovies} />
+      {!searchResultArray.length && isSearching && !isLoading ? (
+        <p className="movies__error">
+          {isSearchError ? isSearchError : 'Ничего не найдено'}
+        </p>
+      ) : (
+        ''
+      )}
       {isLoading ? (
         <Preloader />
-      ) :  (
+      ) : (
         <MoviesCardList
           isLoading={isLoading}
-          beatFilmsArray={beatFilmsArray}
           searchResultArray={searchResultArray}
           isSearching={isSearching}
           onCardClick={onCardClick}
@@ -36,11 +38,10 @@ function Movies(props) {
           savedMovies={savedMovies}
           onDeleteClick={onDeleteClick}
         />
-
       )}
 
-{!searchResultArray.length && isSearching ? <p>Ничего не найдено</p> : '' }
-    </section >
+
+    </section>
   );
 }
 

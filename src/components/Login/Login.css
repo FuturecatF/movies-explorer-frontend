@@ -50,15 +50,16 @@
   position: relative;
   border: none;
   outline: none;
-  margin-bottom: 24px;
   background-color: #202020;
   border-bottom: 1px solid #424242;
+  box-shadow: inset 0 0 0 50px #202020;
+  -webkit-text-fill-color: #fff;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
-  padding: 0 5px 10px 0;
+  padding: 0 0 10px 0;
 }
 
 .login__input_color-red {
@@ -71,12 +72,14 @@
   font-size: 10px;
   line-height: 12px;
   color: #ee3465;
-  margin: 6px 0 0;
+  margin: 6px 0 24px;
 }
 
 .login__input:last-of-type {
   margin-bottom: 0;
   margin-top: 0;
+  box-shadow: inset 0 0 0 50px inherit;
+  -webkit-text-fill-color: inherit;
 }
 
 .login__form {
@@ -91,7 +94,6 @@
 .login__button {
   background: #4285f4;
   border-radius: 3px;
-  margin-top: 221px;
   border: none;
   outline: 0;
   cursor: pointer;
@@ -108,6 +110,30 @@
 
 .login__button:hover {
 opacity: .8;
+}
+
+.login__button-error {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+  margin-top: 221px;
+  text-align: center;
+}
+
+.login__button:hover {
+  opacity: 0.8;
+}
+
+.login__button_disabled {
+  background: #343435;
+  color: #777777;
+  cursor: initial;
+}
+
+.register__button_disabled:hover {
+  opacity: 1;
 }
 
 .login__link {

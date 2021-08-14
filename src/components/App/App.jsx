@@ -39,7 +39,8 @@ function App() {
   const [isMobileMenuOpen, SetIsMobileMenuOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [isAuthError, setIsAuthError] = React.useState(String);
+  const [isRegisterError, setIsRegisterError] = React.useState('');
+  const [isLoginError, setIsLoginError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [beatFilmsArray, setBeatFilmsArray] = React.useState([]);
   const [searchResultArray, setSearchResultArray] = React.useState([]);
@@ -50,6 +51,8 @@ function App() {
   const [isSearchingSaved, setIsSearchingSaved] = React.useState(false);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedMovieIds, setSavedMovieIds] = React.useState([]);
+  const [isSearchError, setIsSearchError] = React.useState('');
+  const [isUpdateProfileError, setIsUpdateProfileError] = React.useState('');
 
   React.useEffect(() => {
     if (isLoggedIn) {
@@ -82,8 +85,8 @@ function App() {
       .catch((err) => {
         console.log(err);
         if (err === 'Error: 409') {
-          setIsAuthError('Пользователь с таким email уже существует');
-        }
+          setIsRegisterError('Пользователь с таким email уже существует');
+        } else setIsRegisterError('Сервер не отвечает');
       });
   }
 
@@ -97,12 +100,13 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        if (err.status === 400) {
-          return console.log('не передано одно из полей');
-        } else if (err.status === 401) {
-          return console.log('пользователь с email не найден');
+        if (err === 'Error: 400') {
+          console.log('Не передано одно из полей');
+        } else if (err === 'Error: 401') {
+          console.log('Неправильная почта или пароль');
+          setIsLoginError('Неправильная почта или пароль');
         }
-        return console.log(err.status);
+        console.log(err);
       });
   }
 
@@ -132,7 +136,6 @@ function App() {
   function getBeatMovies() {
     getBeatMoviesFromApi()
       .then((data) => {
-        console.log(data);
         const pattern = /^http[s]?:\/\/\w+/;
 
         const moviesArray = data.map((item) => {
@@ -151,7 +154,12 @@ function App() {
         });
         setBeatFilmsArray(moviesArray);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsSearchError(
+          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+        );
+        console.log(err);
+      });
   }
 
   React.useEffect(() => {
@@ -288,8 +296,28 @@ function App() {
         }
       })
       .catch((err) => {
+        if (err === 'Error: 409') {
+          setIsUpdateProfileError('Пользователь с таким email уже существует');
+        }
         console.log(err);
       });
+  }
+
+  function handleLogOut() {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    history.push('/');
+    setCurrentUser({});
+    setSavedMovies([]);
+    setSavedMovieIds([]);
+    setBeatFilmsArray([]);
+    setSearchResultArray([]);
+    setSearchResultSavedArray([]);
+    setIsSearching(false);
+    setIsLoading(false);
+    setIsLoginError('');
+    setIsRegisterError('');
+    setIsUpdateProfileError('');
   }
 
   return (
@@ -307,13 +335,13 @@ function App() {
               path="/movies"
               component={Movies}
               isLoading={isLoading}
-              beatFilmsArray={beatFilmsArray}
               getSearchMovies={handleSearch}
               searchResultArray={searchResultArray}
               isSearching={isSearching}
               onCardClick={handleMovieLike}
               savedMovieIds={savedMovieIds}
               savedMovies={savedMovies}
+              isSearchError={isSearchError}
             />
             <ProtectedRoute
               path="/saved-movies"
@@ -332,13 +360,18 @@ function App() {
               component={Profile}
               currentUser={currentUser}
               onChangeProfile={handleChangeProfile}
+              onLogOut={handleLogOut}
+              isUpdateProfileError={isUpdateProfileError}
             />
 
             <Route path="/signup">
-              <Register onRegister={onRegister} isAuthError={isAuthError} />
+              <Register
+                onRegister={onRegister}
+                isRegisterError={isRegisterError}
+              />
             </Route>
             <Route path="/signin">
-              <Login onLogin={onLogin} />
+              <Login onLogin={onLogin} isLoginError={isLoginError} />
             </Route>
 
             <Route path="*">

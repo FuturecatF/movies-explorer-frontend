@@ -1,9 +1,12 @@
 import './Profile.css';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-function Profile({ currentUser, onChangeProfile }) {
+function Profile(props) {
+  const { currentUser, onChangeProfile, onLogOut, isUpdateProfileError } =
+    props;
   const { name, email } = currentUser;
-  const form = useForm( { mode: 'onChange' } );
+  const form = useForm({ mode: 'onChange' });
+
   const {
     register,
     formState: { errors },
@@ -13,8 +16,12 @@ function Profile({ currentUser, onChangeProfile }) {
 
   const onSubmit = (data) => {
     console.log(data);
-   // onChangeProfile(data);
+    onChangeProfile(data);
   };
+
+  function handleLogOut() {
+    onLogOut();
+  }
 
   return (
     <div className="profile">
@@ -32,7 +39,6 @@ function Profile({ currentUser, onChangeProfile }) {
               id="profile-name"
               className="profile__form-input"
               placeholder="Имя"
-              aria-invalid={errors.name ? "true" : "false"}
               defaultValue={name}
               {...register('name', {
                 required: true,
@@ -51,19 +57,21 @@ function Profile({ currentUser, onChangeProfile }) {
               defaultValue={email}
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
-            <p className="register__input-error">
-              {errors.email?.type === 'required' && 'Это обязательное поле'}
-              {errors.email?.type === 'pattern' &&
-                'Почта должна соответствовать почте'}
-            </p>
           </div>
         </fieldset>
-        <p className="register__input-error">
-          {errors.name?.type === 'required' && 'Это обязательное поле'}
+        <p className="profile__form-errors">
+          {errors.name?.type === 'required' && 'Имя обязательное поле'}
           {errors.name?.type === 'minLength' && 'Минимальная длина 2 символа'}
-
           {errors.name?.type === 'pattern' && 'Неподходящее имя'}
         </p>
+        <p className="profile__form-errors">
+          {errors.email?.type === 'required' && 'Почта обязательное поле'}
+          {errors.email?.type === 'pattern' &&
+            'Почта должна соответствовать почте'}
+        </p>
+
+        <p className="profile__update-errors">{isUpdateProfileError}</p>
+
         <button
           disabled={!isValid}
           type="submit"
@@ -73,12 +81,14 @@ function Profile({ currentUser, onChangeProfile }) {
         >
           Редактировать
         </button>
-        <button type="button" className="profile__form-button profile__form-button_red">
+        <button
+          type="button"
+          className="profile__form-button profile__form-button_red"
+          onClick={handleLogOut}
+        >
           Выйти из аккаунта
         </button>
-
       </form>
-
     </div>
   );
 }

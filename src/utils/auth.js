@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001'; // https://api.futurecat-diploma.nomoredomains.club
+const BASE_URL = 'https://api.futurecat-diploma.nomoredomains.club';
 const headers = { 'Content-Type': 'application/json' };
 
 function getResponseData(res) {

@@ -3,7 +3,7 @@ import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-function Register({ onRegister, isAuthError }) {
+function Register({ onRegister, isRegisterError }) {
   const form = useForm({ mode: 'onChange' });
   const {
     register,
@@ -81,7 +81,7 @@ function Register({ onRegister, isAuthError }) {
           <p className="register__input-error">
             {errors.password?.type === 'required' && 'Это обязательное поле'}
           </p>
-          <p className="register__button-error">{isAuthError}</p>
+          <p className="register__button-error">{isRegisterError}</p>
           <button
             className={`register__button ${
               !isValid ? 'register__button_disabled' : ''

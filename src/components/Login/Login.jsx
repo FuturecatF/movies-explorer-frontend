@@ -3,7 +3,7 @@ import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-function Login({ onLogin }) {
+function Login({ onLogin, isLoginError }) {
   const {
     register,
     formState: { errors },
@@ -38,8 +38,8 @@ function Login({ onLogin }) {
             required
           />
           <p className="login__input-error">
-            {errors.email?.type === 'required' && 'email is required'}
-            {errors.email?.type === 'pattern' && 'email must be email'}
+            {errors.email?.type === 'required' && 'Это обязательное поле'}
+            {errors.email?.type === 'pattern' && 'Почта должна соответствовать почте'}
           </p>
           <label className="login__input-label" htmlFor="login-input-password">
             Пароль
@@ -51,9 +51,10 @@ function Login({ onLogin }) {
             {...register('password', { required: true })}
           />
           <p className="login__input-error">
-            {errors.password?.type === 'required' && '"Пароль" обязательное поле'}
+            {errors.password?.type === 'required' && 'Это обязательное поле'}
 
           </p>
+          <p className="register__button-error">{isLoginError}</p>
           <button className="login__button">Войти</button>
           <p className="login__subtitle">
             Ещё не зарегистрированы?
