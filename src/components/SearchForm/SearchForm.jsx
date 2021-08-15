@@ -1,22 +1,31 @@
 import './SearchForm.css';
+import React from 'react';
 import searchIcon from '../../images/search.svg';
 import searchInputIcon from '../../images/search-input.svg';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
-function SearchForm({ getSearchMovies }) {
+function SearchForm({ getSearchMovies, isLoading }) {
   const location = useLocation();
-  const form = useForm();
+  const form = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit '});
   const {
     register,
     handleSubmit,
+    formState: { errors },
   } = form;
+
+const [isDisabledSearching, setIsDisabledSearching] = React.useState(false);
+
 const path = location.pathname;
+
   const onSubmit = (data) => {
+    console.log(isDisabledSearching)
+    setIsDisabledSearching(true);
     getSearchMovies(data, path);
     console.log(data);
   };
 
   return (
+    <section className="search">
     <div className="search-form">
       <div className="search-form__container">
         <form className="search-form__container-input" onSubmit={handleSubmit(onSubmit)}
@@ -35,11 +44,12 @@ const path = location.pathname;
             ></input>
           </label>
           <div className="search-form__btn-container">
-            <button className="search-form__btn">
+            <button className={`search-form__btn ${isLoading ? 'search-form__btn_disabled' : ''}`} disabled={isLoading}>
               <img
                 className="search-form__image-btn"
                 src={searchIcon}
                 alt="Найти"
+                type="submit"
               />
             </button>
           </div>
@@ -57,7 +67,13 @@ const path = location.pathname;
           </div>
         </div>
       </div>
+
     </div>
+    <p className="search__error">
+    {errors.search?.type === 'required' && 'Нужно ввести слово для поиска'}
+
+  </p>
+  </section>
   );
 }
 

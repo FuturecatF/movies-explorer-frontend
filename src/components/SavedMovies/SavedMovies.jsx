@@ -12,10 +12,18 @@ function SavedMovies(props) {
     getSearchMovies,
     searchResultSavedArray,
     isSearchingSaved,
+    isSearchSavedError,
   } = props;
   return (
     <div className="saved-movies">
-      <SearchForm getSearchMovies={getSearchMovies}/>
+      <SearchForm getSearchMovies={getSearchMovies} isLoading={isLoading}/>
+      {!searchResultSavedArray.length && isSearchingSaved && !isLoading ? (
+        <p className="saved-movies__error">
+          {isSearchSavedError ? isSearchSavedError : 'Ничего не найдено'}
+        </p>
+      ) : (
+        ''
+      )}
       {isLoading ? (
         <Preloader />
       ) : (

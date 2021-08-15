@@ -132,7 +132,7 @@ opacity: .8;
   cursor: initial;
 }
 
-.register__button_disabled:hover {
+.login__button_disabled:hover {
   opacity: 1;
 }
 

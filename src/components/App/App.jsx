@@ -22,17 +22,29 @@ import {
 import * as auth from '../../utils/auth';
 import { api } from '../../utils/MainApi';
 import { getBeatMoviesFromApi } from '../../utils/MoviesApi';
+import {
+  SHORTMOVIETIME,
+  HEADERLOCATION,
+  FOOTERLOCATION,
+  ERROR409,
+  ERROR401,
+  CARDDELETED,
+  REQUESTERROR,
+  DUBLICATEEMAIL,
+  SERVERERROR,
+  AUTHERROR,
+  DEFAULTRAILER,
+  DEFAULTIMAGE
+} from '../../utils/config';
 
 function App() {
   const location = useLocation();
   const history = useHistory();
-  const headerLocation = ['/', '/movies', '/saved-movies', '/profile'];
-  const footerLocation = ['/', '/movies', '/saved-movies'];
 
-  const shouldShowHeader = headerLocation.some(
+  const shouldShowHeader = HEADERLOCATION.some(
     (item) => location.pathname === item
   );
-  const shouldShowFooter = footerLocation.some(
+  const shouldShowFooter = FOOTERLOCATION.some(
     (item) => location.pathname === item
   );
 
@@ -52,8 +64,10 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [savedMovieIds, setSavedMovieIds] = React.useState([]);
   const [isSearchError, setIsSearchError] = React.useState('');
-  const [isUpdateProfileError, setIsUpdateProfileError] = React.useState('');
+  const [isSearchSavedError, setIsSearchSavedError] = React.useState('');
 
+  const [isUpdateProfileError, setIsUpdateProfileError] = React.useState('');
+  const [isValidRegister, setIsValidRegister] = React.useState(true);
   React.useEffect(() => {
     if (isLoggedIn) {
       api
@@ -61,7 +75,10 @@ function App() {
         .then((data) => {
           setSavedMovies(data.reverse());
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setIsSearchSavedError(REQUESTERROR);
+          console.log(err);
+        });
     }
   }, [isLoggedIn]);
 
@@ -75,6 +92,7 @@ function App() {
 
   function onRegister(data) {
     const { name, email, password } = data;
+    setIsValidRegister(false);
     auth
       .getRegister(name, email, password)
       .then((res) => {
@@ -82,15 +100,17 @@ function App() {
           onLogin(email, password);
         }
       })
+      .then(() => setIsValidRegister(true))
       .catch((err) => {
         console.log(err);
-        if (err === 'Error: 409') {
-          setIsRegisterError('Пользователь с таким email уже существует');
-        } else setIsRegisterError('Сервер не отвечает');
+        if (err === ERROR409) {
+          setIsRegisterError(DUBLICATEEMAIL);
+        } else setIsRegisterError(SERVERERROR);
       });
   }
 
   function onLogin(email, password) {
+    getBeatMovies();
     auth
       .getLogin(email, password)
       .then((res) => {
@@ -99,12 +119,8 @@ function App() {
         history.push('/movies');
       })
       .catch((err) => {
-        console.log(err);
-        if (err === 'Error: 400') {
-          console.log('Не передано одно из полей');
-        } else if (err === 'Error: 401') {
-          console.log('Неправильная почта или пароль');
-          setIsLoginError('Неправильная почта или пароль');
+        if (err === ERROR401) {
+          setIsLoginError(AUTHERROR);
         }
         console.log(err);
       });
@@ -122,16 +138,20 @@ function App() {
           }
         })
         .catch((err) => {
-          console.log(err.status);
-          if (err.status === 401) {
-            return console.log('Переданный токен некорректен ');
+          console.log(err);
+          if (err === ERROR401) {
+            console.log('Переданный токен некорректен ');
           } else if (!jwt) {
-            return console.log('Токен не передан или передан не в том формате');
+            console.log('Токен не передан или передан не в том формате');
           }
-          return console.log('error 500');
+          console.log('error 500');
         });
     }
-  }, [isLoggedIn]);
+  }, []);
+
+  React.useEffect(() => {
+    getBeatMovies();
+  }, []);
 
   function getBeatMovies() {
     getBeatMoviesFromApi()
@@ -143,28 +163,22 @@ function App() {
             ...item,
             nameRU: item.nameRU,
             nameEN: item.nameEN ? item.nameEN : item.nameRU,
-            image: `https://api.nomoreparties.co${item.image.url}`,
+            image: `${DEFAULTIMAGE}${item.image.url}`,
             trailer:
               item.trailerLink === null || !pattern.test(item.trailerLink)
-                ? 'https://images.unsplash.com/photo-1493599588594-dc6ae2c099bf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80'
+                ? DEFAULTRAILER
                 : item.trailerLink,
-            thumbnail: `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
+            thumbnail: `${DEFAULTIMAGE}${item.image.formats.thumbnail.url}`,
             movieId: item.id,
           };
         });
         setBeatFilmsArray(moviesArray);
       })
       .catch((err) => {
-        setIsSearchError(
-          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-        );
+        setIsSearchError(REQUESTERROR);
         console.log(err);
       });
   }
-
-  React.useEffect(() => {
-    getBeatMovies();
-  }, []);
 
   function getSearchResult(data, array, setArray) {
     setIsLoading(true);
@@ -181,23 +195,20 @@ function App() {
     const res = array.filter((el) => {
       const nameRU = el.nameRU.toLowerCase();
       const nameEN = el.nameEN.toLowerCase();
-      const description = el.description.toLowerCase();
 
-      return (
-        nameRU.includes(keyword) ||
-        nameEN.includes(keyword) ||
-        description.includes(keyword)
-      );
+      return nameRU.includes(keyword) || nameEN.includes(keyword);
     });
 
     if (checkbox) {
-      const shortMoviesResult = res.filter((item) => item.duration <= 40);
+      const shortMoviesResult = res.filter(
+        (item) => item.duration <= SHORTMOVIETIME
+      );
       setResult(setArray, shortMoviesResult);
     } else {
       setResult(setArray, res);
     }
 
-    setTimeout(function doSomething() {
+    setTimeout(function stopPreloader() {
       setIsLoading(false);
     }, 2000);
   }
@@ -253,7 +264,7 @@ function App() {
               .deleteMovie(i._id)
 
               .then((movie) => {
-                if (movie.message === 'Карточка удалена') {
+                if (movie.message === CARDDELETED) {
                   setSavedMovies((state) =>
                     state.filter((item) => item.movieId !== i.movieId)
                   );
@@ -273,7 +284,7 @@ function App() {
     api
       .deleteMovie(movie._id)
       .then((newMovie) => {
-        if (newMovie.message === 'Карточка удалена') {
+        if (newMovie.message === CARDDELETED) {
           setSavedMovies((state) =>
             state.filter((item) => item.movieId !== movie.movieId)
           );
@@ -293,11 +304,16 @@ function App() {
       .then((res) => {
         if (res) {
           setCurrentUser({ name: res.name, email: res.email });
+
+          setIsUpdateProfileError('Данные успешно сохранены');
+          setTimeout(() => {
+            setIsUpdateProfileError('');
+          }, 5000);
         }
       })
       .catch((err) => {
-        if (err === 'Error: 409') {
-          setIsUpdateProfileError('Пользователь с таким email уже существует');
+        if (err === ERROR409) {
+          setIsUpdateProfileError(DUBLICATEEMAIL);
         }
         console.log(err);
       });
@@ -354,6 +370,7 @@ function App() {
               getSearchMovies={handleSearch}
               searchResultSavedArray={searchResultSavedArray}
               isSearchingSaved={isSearchingSaved}
+              isSearchSavedError={isSearchSavedError}
             />
             <ProtectedRoute
               path="/profile"
@@ -364,15 +381,20 @@ function App() {
               isUpdateProfileError={isUpdateProfileError}
             />
 
-            <Route path="/signup">
-              <Register
-                onRegister={onRegister}
-                isRegisterError={isRegisterError}
-              />
-            </Route>
-            <Route path="/signin">
-              <Login onLogin={onLogin} isLoginError={isLoginError} />
-            </Route>
+            {!isLoggedIn && (
+              <Route path="/signup">
+                <Register
+                  onRegister={onRegister}
+                  isRegisterError={isRegisterError}
+                  isValidRegister={isValidRegister}
+                />
+              </Route>
+            )}
+            {!isLoggedIn && (
+              <Route path="/signin">
+                <Login onLogin={onLogin} isLoginError={isLoginError} />
+              </Route>
+            )}
 
             <Route path="*">
               <PageNotFound />

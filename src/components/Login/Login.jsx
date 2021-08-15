@@ -1,18 +1,32 @@
 import './Login.css';
+import React from 'react';
 import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 function Login({ onLogin, isLoginError }) {
+  const [isValidation, setValidation] = React.useState(false);
+
+
+  const form = useForm({ mode: 'onChange' });
   const {
+    reset,
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ mode: 'onChange' });
+  } = form;
+  const { isValid } = form.formState;
+  React.useEffect(() => {
+    if (isValid) {
+      setValidation(true);
+    }
+  }, [isValid]);
+
   const onSubmit = (data) => {
-    const { email, password } = data;
-    console.log(data);
-    onLogin(email, password);
+    setValidation(false);
+
+    onLogin(data.email, data.password);
+    reset();
   };
 
   return (
@@ -34,7 +48,7 @@ function Login({ onLogin, isLoginError }) {
             className="login__input"
             type="email"
             id="login-input-email"
-            {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+            {...register('email', { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
             required
           />
           <p className="login__input-error">
@@ -48,14 +62,20 @@ function Login({ onLogin, isLoginError }) {
             className="login__input login__input_color-red"
             type="password"
             id="login-input-password"
-            {...register('password', { required: true })}
+            {...register('password', { required: true, minLength: 3 })}
           />
           <p className="login__input-error">
             {errors.password?.type === 'required' && 'Это обязательное поле'}
+            {errors.password?.type === 'minLength' && 'Минимальная длина пароля 3 символа'}
 
           </p>
-          <p className="register__button-error">{isLoginError}</p>
-          <button className="login__button">Войти</button>
+          <p className="login__button-error">{isLoginError}</p>
+          <button
+            className={`login__button ${
+              !isValidation ? 'login__button_disabled' : ''
+            }`}
+            disabled={!isValidation}
+          >Войти</button>
           <p className="login__subtitle">
             Ещё не зарегистрированы?
             <Link className="login__link" to="/signup">

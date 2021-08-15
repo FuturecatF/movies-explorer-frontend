@@ -5,17 +5,34 @@ function Profile(props) {
   const { currentUser, onChangeProfile, onLogOut, isUpdateProfileError } =
     props;
   const { name, email } = currentUser;
+  const [isValidation, setValidation] = React.useState(false);
+
   const form = useForm({ mode: 'onChange' });
 
   const {
+    watch,
     register,
     formState: { errors },
     handleSubmit,
   } = form;
   const { isValid } = form.formState;
+  const defaultValueName = watch('name');
+  const defaultValueEmail = watch('email');
+
+  React.useEffect(() => {
+    if (
+      (defaultValueName !== name && isValid) ||
+      (defaultValueEmail !== email && isValid)
+    ) {
+      setValidation(true);
+    } else {
+      setValidation(false);
+    }
+  }, [defaultValueName, defaultValueEmail, name, email, isValid, isValidation]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    setValidation(false);
+
     onChangeProfile(data);
   };
 
@@ -55,7 +72,10 @@ function Profile(props) {
               className="profile__form-input"
               placeholder="Почта"
               defaultValue={email}
-              {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+              {...register('email', {
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              })}
             />
           </div>
         </fieldset>
@@ -73,10 +93,10 @@ function Profile(props) {
         <p className="profile__update-errors">{isUpdateProfileError}</p>
 
         <button
-          disabled={!isValid}
+          disabled={!isValidation}
           type="submit"
           className={`profile__form-button ${
-            !isValid ? 'profile__form-button_disabled' : ''
+            !isValidation ? 'profile__form-button_disabled' : ''
           }`}
         >
           Редактировать

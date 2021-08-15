@@ -18,7 +18,7 @@ function Movies(props) {
 
   return (
     <section className="movies">
-      <SearchForm getSearchMovies={getSearchMovies} />
+      <SearchForm getSearchMovies={getSearchMovies} isLoading={isLoading}/>
       {!searchResultArray.length && isSearching && !isLoading ? (
         <p className="movies__error">
           {isSearchError ? isSearchError : 'Ничего не найдено'}

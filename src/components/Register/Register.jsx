@@ -1,19 +1,31 @@
 import './Register.css';
+import React from 'react';
 import logo from '../../images/logo.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-function Register({ onRegister, isRegisterError }) {
+function Register({ onRegister, isRegisterError, isValidRegister }) {
+  const [isValidation, setValidation] = React.useState(false);
+
   const form = useForm({ mode: 'onChange' });
   const {
+    reset,
     register,
     formState: { errors },
     handleSubmit,
   } = form;
   const { isValid } = form.formState;
 
+  React.useEffect(() => {
+    if (isValid) {
+      setValidation(true);
+    }
+  }, [isValid]);
+
   const onSubmit = (data) => {
+    setValidation(false);
     onRegister(data);
+    reset();
   };
 
   return (
@@ -59,7 +71,10 @@ function Register({ onRegister, isRegisterError }) {
             className="register__input"
             type="email"
             id="register-input-email"
-            {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+            {...register('email', {
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            })}
           />
           <p className="register__input-error">
             {errors.email?.type === 'required' && 'Это обязательное поле'}
@@ -76,17 +91,18 @@ function Register({ onRegister, isRegisterError }) {
             className="register__input register__input_color-red"
             type="password"
             id="register-input-password"
-            {...register('password', { required: true })}
+            {...register('password', { required: true, minLength: 3, })}
           />
           <p className="register__input-error">
             {errors.password?.type === 'required' && 'Это обязательное поле'}
+            {errors.password?.type === 'minLength' && 'Минимальная длина пароля 3 символа'}
           </p>
           <p className="register__button-error">{isRegisterError}</p>
           <button
             className={`register__button ${
-              !isValid ? 'register__button_disabled' : ''
+              !isValidation ? 'register__button_disabled' : ''
             }`}
-            disabled={!isValid}
+            disabled={!isValidation}
           >
             Зарегистрироваться
           </button>
