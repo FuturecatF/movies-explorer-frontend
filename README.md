@@ -1,14 +1,15 @@
-# Дипломный проект Movies Explorer - API
+# Дипломный проект movies-explorer-frontend
 
 ## О чём проект:
-Проект представляет собой страницу с регистрацией и авторизацией, где можно просматривать фильмы и добавлять в избранное. В данном репозитории - API для проекта.
+Проект представляет собой сайт с портфолио и дополнительной возможностью искать фильмы и добавлять их в избранное.
 
 ## Стэк: 
-Express.js, MongoDB, Mongoose
+React, БЭМ, Адаптивная верстка flex/grid
 
 ## Запуск проекта:
 
-`npm run start` — запускает сервер <br>
-`npm run dev` — запускает сервер с hot reload
+`npm run start` — запускает сайт для разработки <br>
+`npm run deploy` — деплой проекта на виртуальную машину Yandex Cloud
 
-[Ссылка на сервер с Api](https://api.futurecat-diploma.nomoredomains.club)
+[Ссылка на проект](https://futurecat-diploma.nomoredomains.club/)
+

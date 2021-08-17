@@ -1,0 +1,151 @@
+.about {
+  margin: 110px auto 0;
+  padding: 0 70px;
+}
+
+.descriptions {
+  display: grid;
+  column-gap: 40px;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  margin-top: 70px;
+}
+
+.description {
+  color: #ffffff;
+  max-width: 500px;
+}
+
+.description__title {
+  margin: 0 0 26px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.description__subtitle {
+  margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.timeline {
+  display: flex;
+  margin: 110px 0;
+}
+
+.timeline-item {
+  width: 100%;
+  max-width: 228px;
+}
+
+.timeline-item__title {
+  background: #303030;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  padding: 9px 0;
+  margin: 0;
+}
+
+.timeline-item__subtitle {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+  margin: 14px 0 0;
+}
+
+.timeline-item__title_frontend {
+  color: #000000;
+  background: #3ddc84;
+}
+
+.timeline-item:last-of-type {
+  max-width: 912px;
+}
+
+@media screen and (max-width: 768px) {
+  .about {
+    margin-top: 90px;
+    padding: 0 50px;
+  }
+  .descriptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+  }
+
+  .description {
+    max-width: 310px;
+  }
+
+  .description__subtitle {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .timeline {
+    margin: 93px 0 90px;
+  }
+  .timeline-item {
+    max-width: 140px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .descriptions {
+    grid-template-columns: 1fr;
+    row-gap: 56px;
+    margin-top: 60px;
+  }
+  .description {
+    max-width: 410px;
+  }
+
+}
+
+@media screen and (max-width: 445px) {
+  .about {
+    margin-top: 70px;
+    padding: 0 18px;
+  }
+
+  .description {
+    max-width: 284px;
+  }
+
+  .description__title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .description__subtitle {
+    font-size: 11px;
+    line-height: 16px;
+  }
+  .timeline {
+    margin: 60px 0 93px;
+  }
+  .timeline-item__title {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .timeline-item__subtitle {
+    font-size: 11px;
+    line-height: 13px;
+  }
+  .timeline-item {
+    max-width: 100px;
+  }
+}

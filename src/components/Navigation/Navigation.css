@@ -1,0 +1,125 @@
+.nav {
+  display: flex;
+  margin: 21px 0 0;
+}
+
+.nav__items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.nav__item {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+  color: #ffffff;
+  display: none;
+  visibility: hidden;
+}
+
+.nav__item_visible {
+  display: block;
+  visibility: visible;
+}
+
+.nav__item:hover {
+  opacity: 0.8;
+}
+
+.nav__item_active {
+  font-weight: 500;
+}
+
+.nav__item-signin {
+  border: none;
+  outline: 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 8px 20px;
+  color: #000000;
+  border-radius: 3px;
+  background-color: #3ddc84;
+}
+
+.nav__item-profile {
+  border: none;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+  background-image: url('../../images/icon-profile.svg');
+  background-repeat: no-repeat;
+  background-position-x: 10px;
+  background-position-y: 7px;
+  border-radius: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  padding: 8px 12px 8px 32px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #fff;
+}
+
+.nav__item-burger {
+  background-image: url('../../images/icon-burger.svg');
+  background-repeat: no-repeat;
+  background-color: transparent;
+  cursor: pointer;
+  outline: 0;
+  padding: 0;
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: none;
+}
+
+.nav__item-burger:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 768px) {
+  .nav {
+    column-gap: 0;
+  }
+
+  .nav__item_mobile {
+    display: none;
+  }
+  .nav__item-burger {
+    display: block;
+  }
+  .nav__item-profile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .nav__items {
+    column-gap: 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .nav {
+    margin-top: 18px;
+  }
+  .nav__item {
+    font-size: 10px;
+  }
+  .nav__item-signin {
+    padding: 5px 12px;
+  }
+  .nav__item-burger {
+    width: 40px;
+    height: 43px;
+  }
+}
