@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 function Login({ onLogin, isLoginError }) {
   const [isValidation, setValidation] = React.useState(false);
 
-
   const form = useForm({ mode: 'onChange' });
   const {
     reset,
@@ -48,12 +47,16 @@ function Login({ onLogin, isLoginError }) {
             className="login__input"
             type="email"
             id="login-input-email"
-            {...register('email', { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
+            {...register('email', {
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            })}
             required
           />
           <p className="login__input-error">
             {errors.email?.type === 'required' && 'Это обязательное поле'}
-            {errors.email?.type === 'pattern' && 'Почта должна соответствовать почте'}
+            {errors.email?.type === 'pattern' &&
+              'Почта должна соответствовать почте'}
           </p>
           <label className="login__input-label" htmlFor="login-input-password">
             Пароль
@@ -66,8 +69,8 @@ function Login({ onLogin, isLoginError }) {
           />
           <p className="login__input-error">
             {errors.password?.type === 'required' && 'Это обязательное поле'}
-            {errors.password?.type === 'minLength' && 'Минимальная длина пароля 3 символа'}
-
+            {errors.password?.type === 'minLength' &&
+              'Минимальная длина пароля 3 символа'}
           </p>
           <p className="login__button-error">{isLoginError}</p>
           <button
@@ -75,7 +78,9 @@ function Login({ onLogin, isLoginError }) {
               !isValidation ? 'login__button_disabled' : ''
             }`}
             disabled={!isValidation}
-          >Войти</button>
+          >
+            Войти
+          </button>
           <p className="login__subtitle">
             Ещё не зарегистрированы?
             <Link className="login__link" to="/signup">

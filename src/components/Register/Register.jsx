@@ -91,11 +91,12 @@ function Register({ onRegister, isRegisterError, isValidRegister }) {
             className="register__input register__input_color-red"
             type="password"
             id="register-input-password"
-            {...register('password', { required: true, minLength: 3, })}
+            {...register('password', { required: true, minLength: 3 })}
           />
           <p className="register__input-error">
             {errors.password?.type === 'required' && 'Это обязательное поле'}
-            {errors.password?.type === 'minLength' && 'Минимальная длина пароля 3 символа'}
+            {errors.password?.type === 'minLength' &&
+              'Минимальная длина пароля 3 символа'}
           </p>
           <p className="register__button-error">{isRegisterError}</p>
           <button

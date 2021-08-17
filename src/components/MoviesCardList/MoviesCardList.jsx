@@ -95,7 +95,6 @@ function MoviesCardList(props) {
                     onCardClick={onCardClick}
                     savedMovieIds={savedMovieIds}
                     savedMovies={savedMovies}
-
                   />
                 );
               }
@@ -106,13 +105,16 @@ function MoviesCardList(props) {
       {!isLoading && (
         <button
           className={`movie-cardlist__btn ${
-            location.pathname === '/saved-movies'
-              && 'movie-cardlist__btn_hidden'}
-              ${location.pathname === '/movies'
-              ? searchResultArray.length <= countRenderedMovies
-              ? 'movie-cardlist__btn_hidden'
-              : '' : ''
-          }`}
+            location.pathname === '/saved-movies' &&
+            'movie-cardlist__btn_hidden'
+          }
+              ${
+                location.pathname === '/movies'
+                  ? searchResultArray.length <= countRenderedMovies
+                    ? 'movie-cardlist__btn_hidden'
+                    : ''
+                  : ''
+              }`}
           type="button"
           onClick={handleAddMovies}
         >

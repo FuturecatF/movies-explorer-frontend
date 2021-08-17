@@ -36,17 +36,26 @@ function MoviesCard(props) {
 
   function handleClick() {
     window.open(trailer);
-  };
+  }
 
   return (
     <li className="movies-item">
-      <img className="movies-item__image" alt="Фото" src={image} onClick={handleClick}></img>
+      <img
+        className="movies-item__image"
+        alt="Фото"
+        src={image}
+        onClick={handleClick}
+      ></img>
       <div className="movies-item__footer">
         <p className="movies-item__title">{name}</p>
         <button
           className={`movies-item__btn ${
             isLiked ? 'movies-item__btn_active' : ''
-          } ${location.pathname === '/saved-movies' ? 'movies-item__btn-delete' : ''}`}
+          } ${
+            location.pathname === '/saved-movies'
+              ? 'movies-item__btn-delete'
+              : ''
+          }`}
           type="button"
           onClick={
             location.pathname === '/movies'

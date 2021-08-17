@@ -9,18 +9,9 @@ const REQUESTERROR =
 const DUBLICATEEMAIL = 'Пользователь с таким email уже существует';
 const SERVERERROR = 'Сервер не отвечает';
 const AUTHERROR = 'Неправильная почта или пароль';
-const DEFAULTRAILER = 'https://images.unsplash.com/photo-1493599588594-dc6ae2c099bf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80'
-const DEFAULTIMAGE = 'https://api.nomoreparties.co'
-
-
-
-
-
-
-
-
-
-
+const DEFAULTRAILER =
+  'https://images.unsplash.com/photo-1493599588594-dc6ae2c099bf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80';
+const DEFAULTIMAGE = 'https://api.nomoreparties.co';
 
 export {
   ERROR409,
@@ -34,5 +25,5 @@ export {
   SERVERERROR,
   AUTHERROR,
   DEFAULTRAILER,
-  DEFAULTIMAGE
+  DEFAULTIMAGE,
 };

@@ -34,7 +34,7 @@ import {
   SERVERERROR,
   AUTHERROR,
   DEFAULTRAILER,
-  DEFAULTIMAGE
+  DEFAULTIMAGE,
 } from '../../utils/config';
 
 function App() {
@@ -147,7 +147,7 @@ function App() {
           console.log('error 500');
         });
     }
-  }, []);
+  }, [isLoggedIn]);
 
   React.useEffect(() => {
     getBeatMovies();
@@ -185,6 +185,7 @@ function App() {
 
     if (array === beatFilmsArray) {
       setIsSearching(true);
+      setIsSearchingSaved(false);
     } else if (array === savedMovies) {
       setIsSearchingSaved(true);
     }
@@ -291,8 +292,12 @@ function App() {
           setSavedMovieIds((state) =>
             state.filter((id) => id !== movie.movieId)
           );
+          setSearchResultSavedArray((state) =>
+            state.filter((item) => item.movieId !== movie.movieId)
+          );
         }
       })
+
       .catch((err) => {
         console.log(err);
       });

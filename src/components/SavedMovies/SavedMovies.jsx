@@ -16,7 +16,7 @@ function SavedMovies(props) {
   } = props;
   return (
     <div className="saved-movies">
-      <SearchForm getSearchMovies={getSearchMovies} isLoading={isLoading}/>
+      <SearchForm getSearchMovies={getSearchMovies} isLoading={isLoading} />
       {!searchResultSavedArray.length && isSearchingSaved && !isLoading ? (
         <p className="saved-movies__error">
           {isSearchSavedError ? isSearchSavedError : 'Ничего не найдено'}
